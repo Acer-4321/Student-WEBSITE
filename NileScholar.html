@@ -1,1939 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NileScholar — Nile University E-Library & Nigerian Student Resource Hub</title>
-
-  <!-- Google Fonts: Fraunces (Editorial Academic), Plus Jakarta Sans (UI), JetBrains Mono (Course Codes) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            nile: {
-              50: '#EFF4FF',
-              100: '#DBE6FE',
-              200: '#BFD3FE',
-              500: '#3B66D4',
-              600: '#2E52B5',
-              700: '#274193', // Official Nile Royal Blue
-              800: '#1E3375',
-              900: '#162557',
-            }
-          },
-          fontFamily: {
-            serif: ['"Fraunces"', 'Georgia', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          }
-        }
-      }
-    };
-  </script>
-
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-      background-color: #F8FAFC;
-      color: #1E293B;
-    }
-    .nile-hero-pattern {
-      background-color: #274193;
-      background-image:
-        radial-gradient(at 85% 15%, rgba(59, 130, 246, 0.32) 0px, transparent 50%),
-        radial-gradient(at 10% 85%, rgba(22, 37, 87, 0.7) 0px, transparent 55%),
-        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: auto, auto, 36px 36px, 36px 36px;
-    }
-    .data-saver .nile-hero-pattern {
-      background-image: none;
-      background-color: #274193;
-    }
-    .data-saver .decorative-blur {
-      display: none !important;
-    }
-    /* Hide scrollbars cleanly for horizontal filter chips */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up {
-      animation: fadeUp 0.28s ease-out forwards;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NileScholar — Study Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Cinzel:wght@400..900&family=Dancing+Script:wght@400..700&family=Exile&family=Playwrite+AU+SA+Guides&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { nile: { 50:'#EFF4FF',100:'#DBE6FE',200:'#BFD3FE',500:'#3B66D4',600:'#2E52B5',700:'#274193',800:'#1E3375',900:'#162557' } },
+  fontFamily: { display:['"Asimovian"','sans-serif'], serif:['"Cinzel"','Georgia','serif'], hand:['"Playwrite AU SA Guides"','cursive'], exile:['"Exile"','sans-serif'], sans:['system-ui','-apple-system','Segoe UI','Roboto','sans-serif'] }
+}}};
+</script>
+<style>
+  body { font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; background:#F8FAFC; color:#1E293B; }
+  .font-display, .font-hand, .font-exile { font-weight:400 !important; }
+  .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+</style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-nile-100 selection:text-nile-900">
+<body class="min-h-screen flex flex-col antialiased">
 
-  <!-- TOP UTILITY BAR -->
-  <div class="bg-nile-900 text-nile-100 text-xs py-2 px-4 border-b border-nile-800">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center gap-2">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-        <span class="font-medium">Nile University of Nigeria • Abuja</span>
-        <span class="hidden sm:inline text-nile-200/70">|</span>
-        <span class="hidden sm:inline italic text-nile-200/90">"Build Your Success For A Better Society"</span>
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <button onclick="switchTab('library')" class="flex items-center gap-3 text-left">
+      <div class="w-10 h-10 rounded-xl bg-nile-700 text-white flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
       </div>
-      <div class="flex items-center gap-3">
-        <!-- Campus Scope Switcher -->
-        <div class="flex items-center bg-nile-800/80 rounded-full p-0.5 border border-nile-700">
-          <button id="scope-nile" onclick="setCampusScope('nile')" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition bg-white text-nile-900">
-            Nile Students
-          </button>
-          <button id="scope-nigeria" onclick="setCampusScope('nigeria')" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition text-nile-100 hover:text-white">
-            All Nigerian Unis
-          </button>
-        </div>
-
-        <!-- Data Saver Toggle -->
-        <button id="data-saver-btn" onclick="toggleDataSaver()" class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-nile-700 hover:bg-nile-800 transition text-[11px] font-medium" title="Strip decorative graphics & prioritize low-MB files">
-          <svg class="w-3.5 h-3.5 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-          </svg>
-          <span id="data-saver-label">Data Saver: Off</span>
-        </button>
-      </div>
-    </div>
+      <span class="font-display text-xl text-nile-900">Nile<span class="text-nile-600">Scholar</span></span>
+    </button>
+    <nav class="flex items-center gap-1">
+      <button data-tab="library" onclick="switchTab('library')" class="nav-tab font-exile px-3 py-2 rounded-lg text-sm">Library</button>
+      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab font-exile px-3 py-2 rounded-lg text-sm">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-nile-100 text-nile-800">0</span></button>
+      <button data-tab="add" onclick="newFile()" class="font-exile px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
+    </nav>
   </div>
+</header>
 
-  <!-- MAIN STICKY NAVBAR -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-      <!-- Brand Logo -->
-      <button onclick="switchTab('library')" class="flex items-center gap-3 text-left group focus:outline-none">
-        <div class="w-10 h-10 rounded-xl bg-nile-700 text-white flex items-center justify-center shadow-sm group-hover:bg-nile-800 transition">
-          <!-- Stylized Open Book + Pillar Emblem -->
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
+<main class="flex-1 w-full max-w-6xl mx-auto px-4 py-8">
+
+  <!-- LIBRARY -->
+  <section id="view-library" class="view">
+    <div class="mb-6">
+      <h1 class="font-serif text-3xl font-bold text-nile-900">Your library</h1>
+      <p class="font-hand text-sm text-slate-600 mt-2">Lecture notes, textbooks and past questions you've added. Files stay in this browser.</p>
+    </div>
+    <div class="flex flex-wrap gap-2.5 mb-6">
+      <input id="search" oninput="render()" type="search" placeholder="Search title, course code or author" class="flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-nile-600" />
+      <select id="f-type" onchange="render()" class="font-exile px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
+        <option value="All">All types</option>
+        <option>Lecture Notes</option><option>Textbook</option><option>Past Questions</option><option>Lab Manual</option><option>Other</option>
+      </select>
+      <select id="f-level" onchange="render()" class="font-exile px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
+        <option value="All">All levels</option>
+        <option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option>
+      </select>
+      <select id="f-sort" onchange="render()" class="font-exile px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
+        <option value="newest">Newest first</option><option value="title">Title A–Z</option><option value="code">Course code</option>
+      </select>
+    </div>
+    <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <div id="empty" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
+      <h3 id="empty-title" class="font-serif text-xl font-bold text-slate-800 mb-2">No files yet</h3>
+      <p id="empty-text" class="text-sm text-slate-500 max-w-md mx-auto mb-5">Add your first lecture note or textbook to start building your library.</p>
+      <button onclick="newFile()" class="font-exile px-5 py-2.5 rounded-xl bg-nile-700 text-white text-sm hover:bg-nile-800">Add a file</button>
+    </div>
+  </section>
+
+  <!-- SHELF -->
+  <section id="view-shelf" class="view hidden">
+    <div class="mb-6">
+      <h1 class="font-serif text-3xl font-bold text-nile-900">Study shelf</h1>
+      <p class="font-hand text-sm text-slate-600 mt-2">Files you've bookmarked to read this semester.</p>
+    </div>
+    <div id="shelf-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <div id="shelf-empty" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+      <h3 class="font-serif text-xl font-bold text-slate-800 mb-2">Your shelf is empty</h3>
+      <p class="text-sm text-slate-500">Tap the bookmark on any file in the library to save it here.</p>
+    </div>
+  </section>
+
+  <!-- ADD -->
+  <section id="view-add" class="view hidden">
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
+      <h1 id="add-heading" class="font-serif text-3xl font-bold text-nile-900">Add a file</h1>
+      <p id="add-sub" class="font-hand text-sm text-slate-600 mt-2 mb-6">Upload a lecture note, textbook or past question pack.</p>
+      <form id="add-form" onsubmit="handleAdd(event)" class="space-y-4">
+        <div>
+          <label id="a-file-label" class="block text-xs font-semibold text-slate-700 mb-1.5">File *</label>
+          <p id="a-file-note" class="hidden text-xs text-slate-500 mb-2"></p>
+          <input id="a-file" type="file" required accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.epub,.jpg,.jpeg,.png" class="w-full text-sm file:mr-3 file:px-4 file:py-2 file:rounded-lg file:border-0 file:bg-nile-50 file:text-nile-700 file:font-semibold hover:file:bg-nile-100 border border-dashed border-slate-300 rounded-xl p-3" />
         </div>
         <div>
-          <span class="font-serif font-bold text-xl tracking-tight text-nile-900 block leading-none">
-            Nile<span class="text-nile-600">Scholar</span>
-          </span>
-          <span class="text-[11px] font-medium text-slate-500 tracking-wide uppercase">
-            Digital E-Library &amp; Study Hub
-          </span>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Title *</label>
+          <input id="a-title" required type="text" placeholder="e.g. Data Structures lecture pack" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
         </div>
-      </button>
-
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-1">
-        <button data-tab="library" onclick="switchTab('library')" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-semibold transition">
-          Browse Library
-        </button>
-        <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-1.5">
-          My Study Shelf
-          <span id="shelf-count-badge" class="px-1.5 py-0.5 text-[11px] font-mono rounded-full bg-nile-100 text-nile-800">0</span>
-        </button>
-        <button data-tab="tools" onclick="switchTab('tools')" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-semibold transition">
-          5.0 CGPA &amp; Focus Timer
-        </button>
-        <button data-tab="contribute" onclick="switchTab('contribute')" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-semibold transition">
-          Upload / Request
-        </button>
-      </nav>
-
-      <!-- Mobile Quick Action -->
-      <div class="flex items-center gap-2">
-        <button onclick="switchTab('contribute')" class="hidden sm:inline-flex items-center gap-1.5 bg-nile-700 hover:bg-nile-800 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm transition">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          Share Material
-        </button>
-        <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50" aria-label="Toggle Menu">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <!-- Mobile Nav Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-1">
-      <button onclick="switchTab('library'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-nile-50">Browse Library</button>
-      <button onclick="switchTab('shelf'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-nile-50 flex justify-between">
-        <span>My Study Shelf</span>
-        <span id="mobile-shelf-count" class="font-mono text-xs bg-nile-100 text-nile-800 px-2 py-0.5 rounded-full">0</span>
-      </button>
-      <button onclick="switchTab('tools'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:bg-nile-50">5.0 CGPA &amp; Focus Timer</button>
-      <button onclick="switchTab('contribute'); toggleMobileMenu()" class="w-full text-left px-3 py-2 rounded-lg text-sm font-semibold text-nile-700 hover:bg-nile-50">Upload / Request Material</button>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT CONTAINER -->
-  <main class="flex-1">
-
-    <!-- ==================== VIEW 1: LIBRARY ==================== -->
-    <section id="view-library" class="view-section">
-
-      <!-- Hero Banner -->
-      <div class="nile-hero-pattern text-white relative overflow-hidden">
-        <div class="decorative-blur absolute -right-24 -top-24 w-96 h-96 rounded-full bg-sky-400/15 blur-3xl pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-          <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-medium text-sky-100 mb-4 backdrop-blur-sm">
-              <span id="hero-badge-text">Personalized for Nile University Students • Jabi Campus &amp; Remote</span>
-            </div>
-
-            <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.15] mb-4">
-              <span id="greeting-text">Welcome, Student.</span><br />
-              <span class="text-sky-200">Every textbook &amp; past question, anywhere.</span>
-            </h1>
-
-            <p id="hero-subtitle" class="text-nile-100 text-base sm:text-lg max-w-2xl mb-7 leading-relaxed">
-              Access verified lecture packs, NUC CCMAS textbooks, and solved Nile University past questions across all 8 faculties — lightweight, fast, and built for studying on or off campus.
-            </p>
-
-            <!-- Search Bar -->
-            <div class="bg-white rounded-2xl p-2 shadow-xl shadow-nile-900/25 flex flex-col sm:flex-row gap-2 max-w-2xl">
-              <div class="flex-1 flex items-center gap-3 px-3">
-                <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  id="search-input"
-                  type="text"
-                  oninput="applyFilters()"
-                  placeholder="Search course code (e.g. CSC 201, GST 111), textbook, or author..."
-                  class="w-full py-2.5 text-slate-800 placeholder-slate-400 text-sm sm:text-base focus:outline-none bg-transparent"
-                />
-                <button id="clear-search-btn" onclick="clearSearch()" class="hidden text-xs font-semibold text-slate-400 hover:text-slate-600 px-2 py-1">
-                  Clear
-                </button>
-              </div>
-              <button onclick="applyFilters()" class="bg-nile-700 hover:bg-nile-800 text-white font-semibold text-sm px-6 py-3 rounded-xl transition shrink-0">
-                Search Library
-              </button>
-            </div>
-
-            <!-- Quick Search Tags -->
-            <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
-              <span class="text-nile-200 font-medium">Popular:</span>
-              <button onclick="quickSearch('CSC 201')" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition font-mono">CSC 201</button>
-              <button onclick="quickSearch('GST 111')" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition font-mono">GST 111</button>
-              <button onclick="quickSearch('Past Questions')" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">Past Questions</button>
-              <button onclick="quickSearch('Engineering')" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">Engineering Maths</button>
-              <button onclick="quickSearch('Law')" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">Nigerian Law</button>
-              <button onclick="quickSearch('Anatomy')" class="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 transition">MBBS / Anatomy</button>
-            </div>
-          </div>
-
-          <!-- Stats Strip -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 pt-8 border-t border-white/15 max-w-4xl">
-            <div>
-              <div id="stat-total-resources" class="font-serif text-2xl font-bold text-white">0</div>
-              <div class="text-xs text-nile-200">Verified Study Packs</div>
-            </div>
-            <div>
-              <div class="font-serif text-2xl font-bold text-white"><span id="stat-faculty-count">0</span> Faculties</div>
-              <div class="text-xs text-nile-200">Full Nile &amp; NUC Coverage</div>
-            </div>
-            <div>
-              <div class="font-serif text-2xl font-bold text-white">100% Free</div>
-              <div class="text-xs text-nile-200">Zero Paywalls or Logins</div>
-            </div>
-            <div>
-              <div class="font-serif text-2xl font-bold text-white">&lt; 3 MB</div>
-              <div class="text-xs text-nile-200">Compressed Mobile PDFs</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sticky Faculty Pills & Filter Controls -->
-      <div class="bg-white border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-4">
-          <!-- Faculty Filter Chips -->
-          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="faculty-pills">
-            <!-- Populated by JS -->
-          </div>
-
-          <!-- Secondary Filters Row -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
-            <div class="flex flex-wrap items-center gap-2.5">
-              <select id="filter-level" onchange="applyFilters()" class="text-xs sm:text-sm font-medium bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-nile-600">
-                <option value="All">All Levels (100L–PG)</option>
-                <option value="100L">100 Level (Freshers)</option>
-                <option value="200L">200 Level</option>
-                <option value="300L">300 Level</option>
-                <option value="400L">400 Level</option>
-                <option value="500L">500 Level</option>
-                <option value="PG">Postgraduate</option>
-              </select>
-
-              <select id="filter-type" onchange="applyFilters()" class="text-xs sm:text-sm font-medium bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-nile-600">
-                <option value="All">All Material Types</option>
-                <option value="Textbook">Textbooks</option>
-                <option value="Lecture Notes">Lecture Notes &amp; Slides</option>
-                <option value="Past Questions">Past Questions &amp; Solutions</option>
-                <option value="Lab Manual">Lab / Practical Guides</option>
-              </select>
-
-              <select id="sort-by" onchange="applyFilters()" class="text-xs sm:text-sm font-medium bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-nile-600">
-                <option value="popular">Sort: Most Downloaded</option>
-                <option value="rating">Sort: Highest Rated</option>
-                <option value="smallest">Sort: Lowest Data (MB)</option>
-                <option value="newest">Sort: Recently Added</option>
-              </select>
-            </div>
-
-            <div class="flex items-center gap-3">
-              <span id="results-count" class="text-xs sm:text-sm text-slate-500 font-medium">Showing 0 resources</span>
-              <button onclick="resetAllFilters()" class="text-xs font-semibold text-nile-700 hover:text-nile-900 underline underline-offset-2">
-                Reset filters
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Resource Cards Grid -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div id="resources-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Cards injected by JS -->
-        </div>
-
-        <!-- Empty State -->
-        <div id="empty-state" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
-          <div class="w-14 h-14 mx-auto rounded-full bg-nile-50 text-nile-700 flex items-center justify-center mb-4">
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-          </div>
-          <h3 class="font-serif text-xl font-bold text-slate-800 mb-2">No matching study materials found</h3>
-          <p class="text-sm text-slate-500 max-w-md mx-auto mb-6">
-            Try clearing a filter or searching by a broader course code. You can also request a missing textbook or upload your own notes!
-          </p>
-          <div class="flex flex-wrap justify-center gap-3">
-            <button onclick="resetAllFilters()" class="px-4 py-2 rounded-lg border border-slate-300 text-sm font-semibold text-slate-700 hover:bg-slate-50">
-              Show All Resources
-            </button>
-            <button onclick="switchTab('contribute')" class="px-4 py-2 rounded-lg bg-nile-700 text-white text-sm font-semibold hover:bg-nile-800">
-              Request Missing Material
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== VIEW 2: MY STUDY SHELF ==================== -->
-    <section id="view-shelf" class="view-section hidden">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <span class="text-xs font-semibold uppercase tracking-wider text-nile-700">Personal Workspace</span>
-            <h2 class="font-serif text-3xl font-bold text-slate-900 mt-1">My Study Shelf</h2>
-            <p class="text-sm text-slate-600 mt-1">Your bookmarked textbooks, lecture slides, and exam prep packs saved locally in your browser.</p>
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Course code</label>
+            <input id="a-code" type="text" placeholder="e.g. CSC 201" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm uppercase focus:outline-none focus:border-nile-600" />
           </div>
-          <button onclick="switchTab('library')" class="inline-flex items-center gap-2 text-sm font-semibold text-nile-700 hover:text-nile-900">
-            <span>+ Add more from Library</span>
-          </button>
-        </div>
-
-        <div id="shelf-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Populated by JS -->
-        </div>
-
-        <div id="shelf-empty" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-slate-200">
-          <div class="w-14 h-14 mx-auto rounded-full bg-nile-50 text-nile-700 flex items-center justify-center mb-4">
-            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-            </svg>
-          </div>
-          <h3 class="font-serif text-xl font-bold text-slate-800 mb-2">Your Study Shelf is empty</h3>
-          <p class="text-sm text-slate-500 max-w-md mx-auto mb-6">
-            Click the bookmark icon on any textbook, lecture note, or past question pack to organize your semester reading list here.
-          </p>
-          <button onclick="switchTab('library')" class="px-5 py-2.5 rounded-xl bg-nile-700 text-white text-sm font-semibold hover:bg-nile-800 transition">
-            Explore Library
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== VIEW 3: 5.0 CGPA & FOCUS TIMER ==================== -->
-    <section id="view-tools" class="view-section hidden">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="mb-8">
-          <span class="text-xs font-semibold uppercase tracking-wider text-nile-700">Academic Excellence Toolkit</span>
-          <h2 class="font-serif text-3xl font-bold text-slate-900 mt-1">NUC 5.0 CGPA Calculator &amp; Study Timer</h2>
-          <p class="text-sm text-slate-600 mt-1">Plan your semester target on Nigeria's 5-point grading scale and stay locked in with deep-work intervals.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <!-- CGPA Calculator (7 cols) -->
-          <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
-              <div>
-                <h3 class="font-serif text-xl font-bold text-slate-900">Semester GPA &amp; Cumulative CGPA</h3>
-                <p class="text-xs text-slate-500 mt-0.5">Standard 5.0 Scale: A(5) • B(4) • C(3) • D(2) • E(1) • F(0)</p>
-              </div>
-              <button onclick="addGpaRow()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-nile-50 text-nile-700 hover:bg-nile-100 text-xs font-bold transition">
-                + Add Course
-              </button>
-            </div>
-
-            <!-- Previous CGPA Inputs -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <div>
-                <label class="block text-[11px] font-semibold uppercase text-slate-500 mb-1">Previous Total Credit Units (Optional)</label>
-                <input id="prev-units" type="number" min="0" value="" oninput="calculateCGPA()" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-sm font-mono bg-white focus:outline-none focus:border-nile-600" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-semibold uppercase text-slate-500 mb-1">Previous CGPA (Optional)</label>
-                <input id="prev-cgpa" type="number" min="0" max="5" step="0.01" value="" oninput="calculateCGPA()" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 text-sm font-mono bg-white focus:outline-none focus:border-nile-600" />
-              </div>
-            </div>
-
-            <!-- Course Rows -->
-            <div class="space-y-2.5 mb-6" id="gpa-rows">
-              <!-- Populated by JS -->
-            </div>
-
-            <!-- Result Summary Banner -->
-            <div class="rounded-xl bg-nile-900 text-white p-5 flex flex-wrap items-center justify-between gap-4">
-              <div class="flex items-center gap-6">
-                <div>
-                  <div class="text-xs text-nile-200 uppercase font-semibold">Semester GPA</div>
-                  <div id="semester-gpa-val" class="font-serif text-3xl font-bold">0.00</div>
-                </div>
-                <div class="h-10 w-px bg-white/15"></div>
-                <div>
-                  <div class="text-xs text-nile-200 uppercase font-semibold">Projected CGPA</div>
-                  <div id="total-cgpa-val" class="font-serif text-3xl font-bold text-sky-300">0.00</div>
-                </div>
-              </div>
-              <div class="text-right">
-                <span id="degree-class-badge" class="inline-block px-3 py-1 rounded-full bg-white/15 text-xs font-bold tracking-wide">
-                  First Class Honours
-                </span>
-                <div id="total-units-text" class="text-[11px] text-nile-200 mt-1 font-mono">0 total units</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Student Focus Timer (5 cols) -->
-          <div class="lg:col-span-5 space-y-6">
-            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 text-center">
-              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-nile-50 text-nile-700 text-xs font-bold mb-4">
-                Student Deep-Work Timer
-              </div>
-
-              <!-- Mode Switcher -->
-              <div class="flex justify-center gap-2 mb-6">
-                <button data-min="25" onclick="setTimerMode(25, 'Focus Session')" class="timer-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-nile-700 text-white">25m Focus</button>
-                <button data-min="50" onclick="setTimerMode(50, 'Exam Marathon')" class="timer-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">50m Marathon</button>
-                <button data-min="5" onclick="setTimerMode(5, 'Short Break')" class="timer-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200">5m Break</button>
-              </div>
-
-              <div id="timer-label" class="text-xs uppercase tracking-widest text-slate-400 font-semibold mb-1">Focus Session</div>
-              <div id="timer-display" class="font-mono text-6xl font-bold text-nile-900 tracking-tight my-4">
-                25:00
-              </div>
-
-              <div class="flex justify-center gap-3 mt-6">
-                <button id="timer-start-btn" onclick="toggleTimer()" class="px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm font-semibold shadow-sm transition">
-                  Start Timer
-                </button>
-                <button onclick="resetTimer()" class="px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-semibold transition">
-                  Reset
-                </button>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-4">Plays a gentle audio chime when your session completes.</p>
-            </div>
-
-            <!-- Study Tip Card -->
-            <div class="bg-nile-50 border border-nile-100 rounded-2xl p-5">
-              <h4 class="font-serif font-bold text-nile-900 text-base mb-1.5">Exam Prep Tip for Nile Students</h4>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Combine past question packs (PQ) with active recall: attempt 2022–2025 questions under timed conditions before checking the worked solutions in the Built-In Reader.
-              </p>
-            </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Author / lecturer</label>
+            <input id="a-author" type="text" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ==================== VIEW 4: CONTRIBUTE / REQUEST ==================== -->
-    <section id="view-contribute" class="view-section hidden">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
-          <div class="mb-6 pb-5 border-b border-slate-100">
-            <span class="text-xs font-semibold uppercase tracking-wider text-nile-700">Community Driven</span>
-            <h2 class="font-serif text-3xl font-bold text-slate-900 mt-1">Share a Resource or Request Material</h2>
-            <p class="text-sm text-slate-600 mt-1">
-              Help fellow students succeed. Resources you publish here are immediately added to your NileScholar library catalog.
-            </p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Type</label>
+            <select id="a-type" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>Lecture Notes</option><option>Textbook</option><option>Past Questions</option><option>Lab Manual</option><option>Other</option>
+            </select>
           </div>
-
-          <form id="contribute-form" onsubmit="handleContribute(event)" class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Submission Mode</label>
-                <select id="contrib-mode" onchange="toggleContribMode()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 focus:outline-none focus:border-nile-600">
-                  <option value="upload">Share / Publish Study Material</option>
-                  <option value="request">Request Missing Textbook / PQ</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Course Code *</label>
-                <input id="contrib-code" required type="text" placeholder="e.g. SWE 301 or GST 211" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-mono uppercase focus:outline-none focus:border-nile-600" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1.5">Title of Textbook / Note / Past Question *</label>
-              <input id="contrib-title" required type="text" placeholder="e.g. Software Engineering Architecture & Design Lecture Pack" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Faculty</label>
-                <select id="contrib-faculty" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-nile-600">
-                  <option value="Computing Studies">Computing Studies</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="Law">Law</option>
-                  <option value="Medical & Health Sciences">Medical &amp; Health Sciences</option>
-                  <option value="Management Sciences">Management Sciences</option>
-                  <option value="Arts & Social Sciences">Arts &amp; Social Sciences</option>
-                  <option value="Natural & Applied Sciences">Natural &amp; Applied Sciences</option>
-                  <option value="Environmental Sciences">Environmental Sciences</option>
-                  <option value="GST & General">GST &amp; General</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Level</label>
-                <select id="contrib-level" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-nile-600">
-                  <option value="100L">100 Level</option>
-                  <option value="200L">200 Level</option>
-                  <option value="300L">300 Level</option>
-                  <option value="400L">400 Level</option>
-                  <option value="500L">500 Level</option>
-                  <option value="PG">Postgraduate</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Resource Type</label>
-                <select id="contrib-type" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-nile-600">
-                  <option value="Lecture Notes">Lecture Notes</option>
-                  <option value="Textbook">Textbook</option>
-                  <option value="Past Questions">Past Questions</option>
-                  <option value="Lab Manual">Lab Manual</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="upload-extra-fields">
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Author / Lecturer / Contributor</label>
-                <input id="contrib-author" type="text" placeholder="e.g. Dept. of Computer Science, NUN" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
-              </div>
-              <div>
-                <label class="block text-xs font-semibold text-slate-700 mb-1.5">External PDF Link (Optional)</label>
-                <input id="contrib-link" type="url" placeholder="https://drive.google.com/..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1.5">Key Topics / Study Summary *</label>
-              <textarea id="contrib-summary" required rows="3" placeholder="Briefly describe chapters covered, exam years included, or what you need..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600"></textarea>
-            </div>
-
-            <div class="pt-2 flex items-center justify-end gap-3">
-              <button type="button" onclick="switchTab('library')" class="px-5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50">
-                Cancel
-              </button>
-              <button type="submit" id="contrib-submit-btn" class="px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm font-semibold shadow-sm transition">
-                Publish to Library
-              </button>
-            </div>
-          </form>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Level</label>
+            <select id="a-level" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Faculty / department</label>
+            <input id="a-faculty" type="text" placeholder="e.g. Computing" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
+          </div>
         </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="bg-white border-t border-slate-200 mt-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-      <div class="flex items-center gap-2">
-        <span class="font-serif font-bold text-nile-900 text-sm">NileScholar</span>
-        <span>•</span>
-        <span>Built for Nile University of Nigeria Students &amp; Nigerian Tertiary Students</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <button onclick="switchTab('library')" class="hover:text-nile-700 font-medium">Browse Catalog</button>
-        <button onclick="switchTab('tools')" class="hover:text-nile-700 font-medium">5.0 CGPA Tool</button>
-        <button onclick="switchTab('contribute')" class="hover:text-nile-700 font-medium">Contribute</button>
-      </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Description</label>
+          <textarea id="a-summary" rows="3" placeholder="Chapters covered, exam years, anything useful" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600"></textarea>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cancelEdit()" class="font-exile px-5 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50">Cancel</button>
+          <button id="a-submit" type="submit" class="font-exile px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm">Save to library</button>
+        </div>
+      </form>
     </div>
-  </footer>
+  </section>
+</main>
 
-  <!-- ==================== BUILT-IN DOCUMENT READER MODAL ==================== -->
-  <div id="reader-modal" class="fixed inset-0 z-50 hidden bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-6">
-    <div id="reader-container" class="bg-white w-full max-w-4xl max-h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-colors">
-      <!-- Reader Toolbar -->
-      <div class="px-5 py-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-nile-900 text-white">
-        <div class="flex items-center gap-3 min-w-0">
-          <span id="reader-code" class="px-2.5 py-1 rounded-md bg-white/15 font-mono text-xs font-bold shrink-0">CSC 201</span>
-          <h3 id="reader-title" class="font-serif font-bold text-sm sm:text-base truncate">Resource Title</h3>
-        </div>
-        <div class="flex items-center gap-2">
-          <button onclick="adjustReaderFont(-1)" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-xs font-bold" title="Decrease font size">A-</button>
-          <button onclick="adjustReaderFont(1)" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-xs font-bold" title="Increase font size">A+</button>
-          <button onclick="toggleReaderNight()" id="reader-night-btn" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-xs font-semibold">
-            Night Mode
-          </button>
-          <button onclick="closeReader()" class="ml-1 p-1.5 rounded-lg hover:bg-white/15 text-white" aria-label="Close reader">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
+<div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-nile-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium"></div>
 
-      <!-- Reader Body -->
-      <div id="reader-body" class="flex-1 overflow-y-auto p-6 sm:p-10 space-y-6 text-slate-700 leading-relaxed" style="font-size: 16px;">
-        <!-- Dynamic Content -->
-      </div>
+<script>
+// ---------- helpers ----------
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const arg = v => esc(JSON.stringify(String(v)));
+function fmtSize(b) { return b >= 1048576 ? (b/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b/1024)) + ' KB'; }
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.add('hidden'), 3000);
+}
 
-      <!-- Reader Footer Actions -->
-      <div class="px-5 py-3.5 border-t border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
-          <button onclick="copyCitation()" class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
-            Copy APA Citation
-          </button>
-          <button id="reader-bookmark-btn" onclick="toggleCurrentReaderBookmark()" class="px-3.5 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
-            Save to Shelf
-          </button>
+// ---------- storage: files in IndexedDB, bookmarks in localStorage ----------
+let db;
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('nilescholar', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('files', { keyPath: 'id' });
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+const tx = (mode, fn) => new Promise((resolve, reject) => {
+  const t = db.transaction('files', mode), s = t.objectStore('files'), r = fn(s);
+  t.oncomplete = () => resolve(r && r.result);
+  t.onerror = () => reject(t.error);
+});
+const getAll = () => tx('readonly', s => s.getAll());
+const putFile = rec => tx('readwrite', s => s.put(rec));
+const delFile = id => tx('readwrite', s => s.delete(id));
+
+let files = [];
+let shelf = [];
+try { shelf = JSON.parse(localStorage.getItem('ns_shelf') || '[]'); if (!Array.isArray(shelf)) shelf = []; } catch { shelf = []; }
+function saveShelf() { try { localStorage.setItem('ns_shelf', JSON.stringify(shelf)); } catch {} }
+
+// ---------- navigation ----------
+function switchTab(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+  if (name !== 'add') resetForm();
+  document.getElementById('view-' + name).classList.remove('hidden');
+  document.querySelectorAll('.nav-tab').forEach(b => {
+    b.className = 'nav-tab font-exile px-3 py-2 rounded-lg text-sm ' + (b.dataset.tab === name ? 'bg-nile-50 text-nile-700' : 'text-slate-600 hover:bg-slate-50');
+  });
+  if (name === 'shelf') renderShelf();
+  window.scrollTo({ top: 0 });
+}
+
+// ---------- rendering ----------
+function cardHTML(f) {
+  const saved = shelf.includes(f.id);
+  return `
+  <article class="bg-white rounded-2xl border border-slate-200 hover:border-nile-300 transition flex flex-col overflow-hidden">
+    <div class="h-1.5 bg-nile-700"></div>
+    <div class="p-5 flex-1 flex flex-col">
+      <div class="flex items-start justify-between gap-2 mb-3">
+        <div class="flex flex-wrap items-center gap-1.5">
+          ${f.code ? `<span class="font-display text-xs px-2.5 py-1 rounded-md bg-nile-900 text-white">${esc(f.code)}</span>` : ''}
+          <span class="font-exile text-[11px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">${esc(f.level)}</span>
+          <span class="font-exile text-[11px] px-2 py-0.5 rounded-md bg-nile-50 text-nile-700">${esc(f.type)}</span>
         </div>
-        <button id="reader-download-btn" onclick="downloadCurrentResource()" class="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-nile-700 hover:bg-nile-800 text-white text-xs sm:text-sm font-semibold transition">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Download Study Pack (.txt)
+        <button onclick="toggleBookmark(${arg(f.id)})" title="${saved ? 'Remove from shelf' : 'Save to shelf'}" class="p-1.5 rounded-lg ${saved ? 'text-nile-700 bg-nile-50' : 'text-slate-400 hover:text-nile-700 hover:bg-slate-50'}">
+          <svg class="w-5 h-5" fill="${saved ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
         </button>
       </div>
+      <h3 class="font-serif font-bold text-lg text-slate-900 leading-snug mb-1">${esc(f.title)}</h3>
+      <p class="text-xs text-slate-500 mb-3">${[f.author, f.faculty].filter(Boolean).map(esc).join(' • ') || 'No author listed'}</p>
+      ${f.summary ? `<p class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-3">${esc(f.summary)}</p>` : ''}
+      <div class="mt-auto pt-3 border-t border-slate-100 text-xs text-slate-500 mb-3 truncate" title="${esc(f.fileName)}">${esc(f.fileName)} • ${fmtSize(f.size)}</div>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="openFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-xs">Open</button>
+        <button onclick="downloadFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Download</button>
+        <button onclick="editFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Edit details</button>
+        <button onclick="removeFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-700 text-slate-500 text-xs">Delete</button>
+      </div>
     </div>
-  </div>
-
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 bg-nile-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium animate-fade-up">
-    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-    <span id="toast-msg">Notification</span>
-  </div>
-
-  <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
-  <script>
-    // 1. NILE UNIVERSITY & NIGERIAN CURRICULUM CATALOG DATA
-    const FACULTIES = [
-      'All Faculties',
-      'Computing Studies',
-      'Engineering',
-      'Law',
-      'Medical & Health Sciences',
-      'Management Sciences',
-      'Arts & Social Sciences',
-      'Natural & Applied Sciences',
-      'Environmental Sciences',
-      'GST & General'
-    ];
-
-    const DEFAULT_RESOURCES = [
-      {
-        id: 'csc-201',
-        code: 'CSC 201',
-        title: 'Data Structures & Algorithms (Nile Lecture Pack + C++/Python)',
-        author: 'Dept. of Computer Science, Nile University',
-        faculty: 'Computing Studies',
-        level: '200L',
-        type: 'Lecture Notes',
-        sizeMB: 1.4,
-        pages: 84,
-        rating: 4.9,
-        downloads: 1840,
-        scope: 'nile',
-        added: '2026-09-12',
-        summary: 'Complete semester slides covering Arrays, Linked Lists, Stacks, Queues, Binary Search Trees, Graphs, and Big-O complexity analysis tailored for NUN Computing students.',
-        toc: ['1. Asymptotic Analysis & Big-O Notation', '2. Singly & Doubly Linked Lists', '3. Stacks, Queues & Recursion', '4. Trees, Heaps & AVL Balancing', '5. Graph Traversal (BFS & DFS) + Nile Exam Focus'],
-        sampleContent: `<h3>Core Concept: Time Complexity Quick Reference</h3>
-          <p>Understanding algorithm efficiency is essential for CSC 201 exams and technical interviews:</p>
-          <ul>
-            <li><strong>Binary Search:</strong> <code>O(log n)</code> — requires sorted array.</li>
-            <li><strong>Merge Sort / Quick Sort (Avg):</strong> <code>O(n log n)</code> — divide and conquer.</li>
-            <li><strong>Hash Table Lookup (Avg):</strong> <code>O(1)</code> — watch out for collisions in worst-case <code>O(n)</code>.</li>
-          </ul>
-          <h4>Sample Nile Past Question Snippet (2024/2025):</h4>
-          <p><em>Q: Write a function to reverse a singly linked list in-place and state its space complexity.</em><br/>
-          <strong>Solution Tip:</strong> Use three pointers (<code>prev</code>, <code>curr</code>, <code>next</code>) to achieve <code>O(n)</code> time and <code>O(1)</code> auxiliary space.</p>`
-      },
-      {
-        id: 'clrs-algo',
-        code: 'CSC 301',
-        title: 'Introduction to Algorithms — Essential Study Companion (CLRS Guide)',
-        author: 'Cormen, Leiserson, Rivest & Stein (Condensed Notes)',
-        faculty: 'Computing Studies',
-        level: '300L',
-        type: 'Textbook',
-        sizeMB: 2.8,
-        pages: 210,
-        rating: 4.8,
-        downloads: 2410,
-        scope: 'all',
-        added: '2026-08-20',
-        summary: 'Compressed chapter summaries, recurrence relations, Dynamic Programming, Greedy Algorithms, and NP-Completeness proofs.',
-        toc: ['1. Master Theorem & Recurrences', '2. Dynamic Programming (Knapsack & LCS)', '3. Greedy Algorithms & Huffman Coding', '4. Shortest Paths (Dijkstra & Bellman-Ford)'],
-        sampleContent: `<h3>Master Theorem Cheat Sheet</h3>
-          <p>For recurrences of the form <code>T(n) = aT(n/b) + f(n)</code> where <code>a &ge; 1, b &gt; 1</code>:</p>
-          <p>Compare <code>f(n)</code> with <code>n^(log_b a)</code> to immediately determine asymptotic bounds without expanding recursion trees during timed exams.</p>`
-      },
-      {
-        id: 'gst-111',
-        code: 'GST 111',
-        title: 'Communication in English & Use of Library (2021–2025 Past Questions)',
-        author: 'Nile General Studies Unit & Student Academic Guild',
-        faculty: 'GST & General',
-        level: '100L',
-        type: 'Past Questions',
-        sizeMB: 0.9,
-        pages: 42,
-        rating: 4.9,
-        downloads: 3920,
-        scope: 'nile',
-        added: '2026-10-01',
-        summary: 'Compiled CBT & theory past questions for NUN 100L freshers covering grammar, concord, comprehension, APA/MLA referencing, and library classification.',
-        toc: ['1. Concord & Parts of Speech Drills', '2. Listening & Note-Taking Strategies', '3. Library Dewey & LC Classification', '4. 120 Solved CBT Questions (2021–2025)'],
-        sampleContent: `<h3>Solved CBT Drills (GST 111)</h3>
-          <p><strong>1.</strong> Neither the lecturer nor the students ____ aware of the venue change.<br/>
-          <em>Answer:</em> <strong>were</strong> (Rule of Proximity: verb agrees with the closer subject "students").</p>
-          <p><strong>2.</strong> Which classification system is predominantly used in Nigerian university libraries like Nile Library?<br/>
-          <em>Answer:</em> <strong>Library of Congress (LC) Classification Scheme</strong>.</p>`
-      },
-      {
-        id: 'get-204',
-        code: 'GET 204',
-        title: 'Engineering Mathematics II — Stroud & NUC Solved Problems',
-        author: 'K.A. Stroud / Adapted by Nile Faculty of Engineering',
-        faculty: 'Engineering',
-        level: '200L',
-        type: 'Textbook',
-        sizeMB: 2.6,
-        pages: 195,
-        rating: 4.9,
-        downloads: 2780,
-        scope: 'all',
-        added: '2026-09-05',
-        summary: 'Step-by-step programmed approach to Laplace Transforms, Differential Equations, Fourier Series, Vector Calculus, and Matrices.',
-        toc: ['1. First & Second Order ODEs', '2. Laplace & Inverse Laplace Transforms', '3. Fourier Series Expansion', '4. Partial Derivatives & Gradient/Divergence/Curl'],
-        sampleContent: `<h3>Key Laplace Transform Table</h3>
-          <ul>
-            <li><code>L{1} = 1/s</code></li>
-            <li><code>L{e^(at)} = 1/(s - a)</code></li>
-            <li><code>L{sin(wt)} = w/(s^2 + w^2)</code></li>
-            <li><code>L{cos(wt)} = s/(s^2 + w^2)</code></li>
-          </ul>
-          <p>Tip: Always check initial conditions <code>y(0)</code> and <code>y'(0)</code> before taking inverse transforms.</p>`
-      },
-      {
-        id: 'cve-305',
-        code: 'CVE 305',
-        title: 'Strength of Materials & Structural Analysis Lab Manual',
-        author: 'Engr. Dr. A. Musa — Nile Civil Engineering',
-        faculty: 'Engineering',
-        level: '300L',
-        type: 'Lab Manual',
-        sizeMB: 1.7,
-        pages: 58,
-        rating: 4.7,
-        downloads: 940,
-        scope: 'nile',
-        added: '2026-09-22',
-        summary: 'Practical guide for Bending Moment & Shear Force Diagrams (BMD/SFD), Mohr Circle stress transformation, and Beam Deflection lab reports.',
-        toc: ['1. Tensile Testing of Mild Steel', '2. Shear Force & Bending Moment Beams', '3. Torsion of Circular Shafts', '4. Lab Report Format & Grading Rubric'],
-        sampleContent: `<h3>Beam Sign Convention Reminder</h3>
-          <p>For simply supported beams: upward loads create positive shear on the left; sagging bending moments (compression on top fibres) are treated as <strong>positive (+)</strong>.</p>`
-      },
-      {
-        id: 'law-201',
-        code: 'LAW 201',
-        title: 'Nigerian Constitutional Law — Cases, Statutes & 1999 Constitution Guide',
-        author: 'Prof. Ese Malemi (Study Digest & Nile Casebook)',
-        faculty: 'Law',
-        level: '200L',
-        type: 'Textbook',
-        sizeMB: 2.1,
-        pages: 164,
-        rating: 4.9,
-        downloads: 1650,
-        scope: 'all',
-        added: '2026-08-30',
-        summary: 'Comprehensive breakdown of Supremacy of the Constitution, Rule of Law, Separation of Powers, Federalism, and Fundamental Human Rights (Chapter IV).',
-        toc: ['1. Nature & Supremacy of the 1999 Constitution', '2. Separation of Powers & Checks', '3. Federalism & Resource Control', '4. Locus Standi & Judicial Review'],
-        sampleContent: `<h3>Landmark Nigerian Cases to Cite</h3>
-          <ul>
-            <li><strong>Attorney-General of Lagos State v. AG Federation (2004):</strong> Federalism and local government funds allocation.</li>
-            <li><strong>Military Governor of Lagos State v. Ojukwu (1986):</strong> Classic authority on Executive Lawlessness and Rule of Law.</li>
-            <li><strong>Adesanya v. President of Nigeria (1981):</strong> Principle of <em>Locus Standi</em>.</li>
-          </ul>`
-      },
-      {
-        id: 'law-402',
-        code: 'LAW 402',
-        title: 'Law of Evidence — Past Questions & IRAC Model Answers',
-        author: 'Nile Law Students Society (LSS) Academic Desk',
-        faculty: 'Law',
-        level: '400L',
-        type: 'Past Questions',
-        sizeMB: 1.1,
-        pages: 49,
-        rating: 4.8,
-        downloads: 1120,
-        scope: 'nile',
-        added: '2026-10-08',
-        summary: 'Solved problem questions under the Evidence Act 2011 (as amended), covering admissibility, hearsay exceptions, confessional statements, and electronic evidence (Section 84).',
-        toc: ['1. Relevancy & Admissibility', '2. Confessional Statements & Trial-within-Trial', '3. Section 84 Computer-Generated Evidence', '4. 2022–2025 Solved LL.B Past Questions'],
-        sampleContent: `<h3>Mastering Section 84 (Electronic Evidence)</h3>
-          <p>Always apply the <strong>IRAC method</strong> (Issue, Rule, Application, Conclusion). For computer-generated documents, check the 4 conditions in Section 84(2) and the Certificate of Compliance under Section 84(4), citing <em>Kubor v. Dickson (2013)</em>.</p>`
-      },
-      {
-        id: 'ana-201',
-        code: 'ANA 201',
-        title: 'Gross Anatomy of Upper & Lower Limbs — High-Yield MBBS Notes',
-        author: 'College of Health Sciences, Nile University',
-        faculty: 'Medical & Health Sciences',
-        level: '200L',
-        type: 'Lecture Notes',
-        sizeMB: 2.9,
-        pages: 112,
-        rating: 4.9,
-        downloads: 2150,
-        scope: 'nile',
-        added: '2026-09-18',
-        summary: 'High-yield brachial plexus tables, muscle attachments, blood supply, nerve injuries (Erb-Duchenne, Klumpke, Wrist Drop), and spotter viva prep.',
-        toc: ['1. Brachial Plexus & Axilla', '2. Cubital Fossa & Forearm Compartments', '3. Femoral Triangle & Popliteal Fossa', '4. Clinical Correlates & Viva Questions'],
-        sampleContent: `<h3>Brachial Plexus Mnemonic</h3>
-          <p><strong>R</strong>eal <strong>T</strong>eenagers <strong>D</strong>rink <strong>C</strong>old <strong>B</strong>eer: <strong>R</strong>oots (C5–T1) &rarr; <strong>T</strong>runks &rarr; <strong>D</strong>ivisions &rarr; <strong>C</strong>ords &rarr; <strong>B</strong>ranches.</p>
-          <p><strong>Clinical Spotter:</strong> Injury to the Radial Nerve in the radial groove causes <em>Wrist Drop</em> due to paralysis of wrist extensors.</p>`
-      },
-      {
-        id: 'phs-202',
-        code: 'PHS 202',
-        title: 'Cardiovascular & Respiratory Physiology (Guyton Digest)',
-        author: 'Dr. T. Adeyemi / Medical Study Hub',
-        faculty: 'Medical & Health Sciences',
-        level: '200L',
-        type: 'Textbook',
-        sizeMB: 2.4,
-        pages: 138,
-        rating: 4.8,
-        downloads: 1730,
-        scope: 'all',
-        added: '2026-09-02',
-        summary: 'Cardiac cycle Wiggers diagram breakdown, ECG waves, Frank-Starling law, oxyhemoglobin dissociation curve shifts, and alveolar ventilation.',
-        toc: ['1. Action Potential in Cardiac Muscle', '2. Cardiac Output & Blood Pressure Regulation', '3. Mechanics of Breathing & Lung Volumes', '4. Gas Exchange & Acid-Base Balance'],
-        sampleContent: `<h3>Bohr Effect (Right Shift of Oxyhemoglobin Curve)</h3>
-          <p>Increased CO<sub>2</sub>, increased H<sup>+</sup> (low pH), increased temperature, and 2,3-BPG shift the curve to the <strong>RIGHT</strong>, promoting oxygen unloading to active tissues.</p>`
-      },
-      {
-        id: 'acc-101',
-        code: 'ACC 101',
-        title: 'Principles of Financial Accounting I (IFRS & Nigerian Standards)',
-        author: 'Faculty of Management Sciences, NUN',
-        faculty: 'Management Sciences',
-        level: '100L',
-        type: 'Textbook',
-        sizeMB: 1.8,
-        pages: 124,
-        rating: 4.7,
-        downloads: 1490,
-        scope: 'all',
-        added: '2026-08-25',
-        summary: 'Double-entry bookkeeping, Cashbooks, Bank Reconciliation Statements, Trial Balance, and Income Statement/Statement of Financial Position adjustments.',
-        toc: ['1. Accounting Equation & Double Entry', '2. Three-Column Cashbook & Discounts', '3. Bank Reconciliation & Suspense Accounts', '4. Final Accounts with Adjustments'],
-        sampleContent: `<h3>Golden Accounting Equation</h3>
-          <p><code>Assets = Equity + Liabilities</code></p>
-          <p>Remember <strong>DEAD CLIC</strong>: <strong>D</strong>ebit (Expenses, Assets, Drawings); <strong>C</strong>redit (Liabilities, Income, Capital).</p>`
-      },
-      {
-        id: 'bus-303',
-        code: 'BUS 303',
-        title: 'Operations Research & Quantitative Techniques (Solved PQ Pack)',
-        author: 'Nile Management Sciences Study Circle',
-        faculty: 'Management Sciences',
-        level: '300L',
-        type: 'Past Questions',
-        sizeMB: 1.2,
-        pages: 54,
-        rating: 4.8,
-        downloads: 980,
-        scope: 'nile',
-        added: '2026-10-04',
-        summary: 'Worked solutions on Linear Programming (Simplex & Graphical), Transportation Models (VAM & NWCM), and PERT/CPM Project Network Diagrams.',
-        toc: ['1. Linear Programming Formulation', '2. Vogel Approximation Method (VAM)', '3. Critical Path Method (CPM)', '4. 2023–2025 Exam Solutions'],
-        sampleContent: `<h3>Finding the Critical Path</h3>
-          <p>The critical path is the <strong>longest duration path</strong> through the network diagram, where Total Float (Slack) equals zero (<code>LF - EF = 0</code>).</p>`
-      },
-      {
-        id: 'eco-201',
-        code: 'ECO 201',
-        title: 'Microeconomic Theory I — Consumer Behaviour & Market Structures',
-        author: 'Dept. of Economics, Nile University',
-        faculty: 'Arts & Social Sciences',
-        level: '200L',
-        type: 'Lecture Notes',
-        sizeMB: 1.3,
-        pages: 76,
-        rating: 4.7,
-        downloads: 1320,
-        scope: 'nile',
-        added: '2026-09-14',
-        summary: 'Indifference curves, Slutsky & Hicksian substitution effects, production isoquants, Perfect Competition, Monopoly, and Oligopoly (Cournot & Sweezy models).',
-        toc: ['1. Cardinal vs Ordinal Utility', '2. Budget Constraints & Income/Substitution Effects', '3. Short-Run & Long-Run Cost Curves', '4. Profit Maximization (MR = MC)'],
-        sampleContent: `<h3>Consumer Equilibrium Condition</h3>
-          <p>The consumer maximizes utility where the Marginal Rate of Substitution equals the price ratio: <code>MRS_xy = MU_x / MU_y = P_x / P_y</code>.</p>`
-      },
-      {
-        id: 'mcm-204',
-        code: 'MCM 204',
-        title: 'News Writing, Reporting & Nigerian Media Law Handbook',
-        author: 'Dept. of Mass Communication',
-        faculty: 'Arts & Social Sciences',
-        level: '200L',
-        type: 'Textbook',
-        sizeMB: 1.5,
-        pages: 92,
-        rating: 4.6,
-        downloads: 870,
-        scope: 'all',
-        added: '2026-09-09',
-        summary: 'Inverted pyramid structure, hard vs soft leads, defamation/libel defences, Freedom of Information (FOI) Act 2011, and broadcast ethics.',
-        toc: ['1. Elements of News & Inverted Pyramid', '2. Writing Punchy Leads & Headlines', '3. Defamation, Libel & Slander in Nigeria', '4. FOI Act 2011 & NBC Code'],
-        sampleContent: `<h3>Defences to Libel in Nigerian Media Law</h3>
-          <p>1. Justification (Truth) &bull; 2. Fair Comment on a matter of public interest &bull; 3. Absolute &amp; Qualified Privilege &bull; 4. Unintentional Defamation.</p>`
-      },
-      {
-        id: 'bch-201',
-        code: 'BCH 201',
-        title: 'General Biochemistry I — Biomolecules & Enzyme Kinetics',
-        author: 'Dept. of Biochemistry, NUN',
-        faculty: 'Natural & Applied Sciences',
-        level: '200L',
-        type: 'Lecture Notes',
-        sizeMB: 1.9,
-        pages: 88,
-        rating: 4.8,
-        downloads: 1410,
-        scope: 'nile',
-        added: '2026-09-19',
-        summary: 'Amino acid titration, protein structure levels, Michaelis-Menten equation, Lineweaver-Burk plots, and competitive vs non-competitive inhibition.',
-        toc: ['1. pH, Buffers & Henderson-Hasselbalch', '2. Amino Acids & Peptide Bonds', '3. Enzyme Kinetics (Km & Vmax)', '4. Carbohydrate & Lipid Classification'],
-        sampleContent: `<h3>Enzyme Inhibition Quick Guide</h3>
-          <ul>
-            <li><strong>Competitive:</strong> Increases apparent <code>Km</code>, <code>Vmax</code> unchanged.</li>
-            <li><strong>Non-competitive:</strong> <code>Km</code> unchanged, decreases <code>Vmax</code>.</li>
-          </ul>`
-      },
-      {
-        id: 'mth-101',
-        code: 'MTH 101',
-        title: 'Elementary Mathematics I (Sets, Trigonometry & Calculus Prep)',
-        author: 'NUC CCMAS 100L Mathematics Panel',
-        faculty: 'Natural & Applied Sciences',
-        level: '100L',
-        type: 'Past Questions',
-        sizeMB: 1.0,
-        pages: 62,
-        rating: 4.9,
-        downloads: 3180,
-        scope: 'all',
-        added: '2026-10-02',
-        summary: '150 solved questions on Mathematical Induction, Binomial Theorem, Complex Numbers (De Moivre), Quadratic Roots, and Circular Measure.',
-        toc: ['1. Set Theory & Venn Diagrams', '2. Mathematical Induction Proofs', '3. Binomial Expansion & Sequences', '4. Complex Numbers & Polar Form'],
-        sampleContent: `<h3>De Moivre's Theorem</h3>
-          <p><code>(cos &theta; + i sin &theta;)^n = cos(n&theta;) + i sin(n&theta;)</code>. Frequently tested in 100L first-semester CBT and theory exams!</p>`
-      },
-      {
-        id: 'arc-203',
-        code: 'ARC 203',
-        title: 'Architectural Graphics, Perspective & AutoCAD Standards',
-        author: 'Faculty of Environmental Sciences, NUN',
-        faculty: 'Environmental Sciences',
-        level: '200L',
-        type: 'Lab Manual',
-        sizeMB: 2.5,
-        pages: 74,
-        rating: 4.7,
-        downloads: 760,
-        scope: 'nile',
-        added: '2026-09-25',
-        summary: 'Studio sheet standards, orthographic projections, 1-point and 2-point perspectives, line weights, and Nigerian building code drawing conventions.',
-        toc: ['1. Line Weights & Architectural Lettering', '2. Orthographic & Axonometric Projections', '3. 2-Point Exterior Perspective Setup', '4. AutoCAD Layer & Plot Style Standards'],
-        sampleContent: `<h3>Studio Line Weight Hierarchy</h3>
-          <p>Cut walls &amp; ground lines: <strong>0.5mm–0.7mm</strong> &bull; Doors, windows &amp; furniture: <strong>0.25mm–0.35mm</strong> &bull; Hatching &amp; grid lines: <strong>0.13mm</strong>.</p>`
-      },
-      {
-        id: 'ent-211',
-        code: 'ENT 211',
-        title: 'Entrepreneurship & Innovation in Nigeria (Feasibility Study Template)',
-        author: 'Nile Centre for Lifelong Learning & NUC Core',
-        faculty: 'GST & General',
-        level: '200L',
-        type: 'Lecture Notes',
-        sizeMB: 0.8,
-        pages: 46,
-        rating: 4.8,
-        downloads: 2240,
-        scope: 'all',
-        added: '2026-09-28',
-        summary: 'Business Model Canvas, CAC registration steps in Nigeria, SMEDAN/BOI funding avenues, break-even analysis, and pitch deck structure.',
-        toc: ['1. Entrepreneurial Mindset & Ideation', '2. Business Model Canvas Explained', '3. Legal Forms & CAC Registration', '4. Financial Projections & Break-Even'],
-        sampleContent: `<h3>Break-Even Point Formula</h3>
-          <p><code>BEP (Units) = Fixed Costs / (Selling Price per Unit - Variable Cost per Unit)</code></p>
-          <p>Always include a SWOT analysis and realistic Nigerian market sizing in your ENT 211 semester group project.</p>`
-      },
-      {
-        id: 'pg-res-801',
-        code: 'RES 801',
-        title: 'Postgraduate Research Methodology & SPSS/Thesis Writing Guide',
-        author: 'School of Postgraduate Studies, Nile University',
-        faculty: 'GST & General',
-        level: 'PG',
-        type: 'Textbook',
-        sizeMB: 1.6,
-        pages: 108,
-        rating: 4.9,
-        downloads: 690,
-        scope: 'nile',
-        added: '2026-09-10',
-        summary: 'Proposal structuring (Chapters 1–3), sampling size calculation (Yamane formula), Cronbach Alpha reliability, regression interpretation, and APA 7th edition.',
-        toc: ['1. Problem Statement & Research Questions', '2. Systematic Literature Review Matrix', '3. Taro Yamane & Cochran Sampling', '4. Quantitative & Qualitative Analysis'],
-        sampleContent: `<h3>Taro Yamane Sample Size Formula</h3>
-          <p><code>n = N / (1 + N(e)^2)</code> where <code>N</code> is population size and <code>e</code> is margin of error (usually <code>0.05</code> for 95% confidence).</p>`
-      }
-    ];
-
-    function escapeHTML(value) {
-      return String(value ?? '').replace(/[&<>"']/g, character => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      })[character]);
-    }
-
-    function jsArg(value) {
-      return escapeHTML(JSON.stringify(String(value)));
-    }
-
-    function readStorage(key, fallback = null) {
-      try {
-        const value = localStorage.getItem(key);
-        return value === null ? fallback : value;
-      } catch (error) {
-        console.warn(`Unable to read "${key}" from local storage.`, error);
-        return fallback;
-      }
-    }
-
-    function loadJSON(key, fallback) {
-      const value = readStorage(key);
-      if (value === null) return fallback;
-      try {
-        return JSON.parse(value) ?? fallback;
-      } catch (error) {
-        console.warn(`Stored data for "${key}" is invalid JSON.`, error);
-        return fallback;
-      }
-    }
-
-    function loadArray(key, fallback) {
-      const value = loadJSON(key, fallback);
-      return Array.isArray(value) ? value : fallback;
-    }
-
-    function saveStorage(key, value) {
-      try {
-        localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
-        return true;
-      } catch (error) {
-        console.error(`Unable to save "${key}" to local storage.`, error);
-        return false;
-      }
-    }
-
-    function getSafeHttpUrl(value) {
-      try {
-        const url = new URL(String(value));
-        return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;
-      } catch {
-        return null;
-      }
-    }
-
-    const DEFAULT_GPA_COURSES = [
-      { code: 'CSC 201', units: 3, grade: 5 },
-      { code: 'MTH 201', units: 3, grade: 4 },
-      { code: 'GST 211', units: 2, grade: 5 },
-      { code: 'SWE 203', units: 3, grade: 5 }
-    ];
-
-    // 2. APPLICATION STATE (with localStorage persistence)
-    const storedScope = readStorage('ns_scope', 'nile');
-    const storedGpaCourses = loadArray('ns_gpa', DEFAULT_GPA_COURSES)
-      .filter(course => course && typeof course === 'object')
-      .map(course => ({
-        code: String(course.code ?? ''),
-        units: [1, 2, 3, 4, 5, 6].includes(Number(course.units)) ? Number(course.units) : 3,
-        grade: [0, 1, 2, 3, 4, 5].includes(Number(course.grade)) ? Number(course.grade) : 0
-      }));
-
-    let state = {
-      activeTab: 'library',
-      campusScope: storedScope === 'nigeria' ? 'nigeria' : 'nile',
-      dataSaver: readStorage('ns_datasaver', 'false') === 'true',
-      selectedFaculty: 'All Faculties',
-      resources: [],
-      shelf: loadArray('ns_shelf', [])
-        .filter(entry => entry && typeof entry.id === 'string')
-        .map(entry => ({
-          id: entry.id,
-          status: ['To Read', 'In Progress', 'Completed'].includes(entry.status) ? entry.status : 'To Read'
-        })),
-      currentReaderId: null,
-      readerFontSize: 16,
-      readerNight: false,
-      gpaCourses: storedGpaCourses
-    };
-
-    // Load custom user-contributed resources + defaults
-    function initResources() {
-      const custom = loadArray('ns_custom_resources', [])
-        .filter(item => item && typeof item === 'object')
-        .map(item => {
-          const summary = String(item.summary ?? '');
-          return {
-            ...item,
-            id: String(item.id ?? ''),
-            code: String(item.code ?? ''),
-            title: String(item.title ?? ''),
-            author: String(item.author ?? ''),
-            faculty: String(item.faculty ?? ''),
-            level: String(item.level ?? ''),
-            type: String(item.type ?? ''),
-            sizeMB: Number(item.sizeMB) || 0,
-            pages: Number(item.pages) || 0,
-            rating: Number(item.rating) || 0,
-            downloads: Number(item.downloads) || 0,
-            added: String(item.added ?? ''),
-            externalLink: String(item.externalLink ?? ''),
-            summary,
-            toc: Array.isArray(item.toc) ? item.toc.map(entry => String(entry ?? '')) : [],
-            sampleContent: `<p>${escapeHTML(summary)}</p>`
-          };
-        });
-      state.resources = [...custom, ...DEFAULT_RESOURCES];
-      document.getElementById('stat-total-resources').textContent = state.resources.length;
-      document.getElementById('stat-faculty-count').textContent = FACULTIES.length - 1;
-    }
-
-    // 3. INITIALIZATION & TIME GREETING
-    document.addEventListener('DOMContentLoaded', () => {
-      initResources();
-      setGreeting();
-      renderFacultyPills();
-      applyCampusScopeUI();
-      applyDataSaverUI();
-      switchTab('library');
-      applyFilters();
-      updateShelfBadges();
-      renderGpaRows();
-      calculateCGPA();
-    });
-
-    function setGreeting() {
-      const hour = new Date().getHours();
-      let greet = 'Good Evening, Student.';
-      if (hour < 12) greet = 'Good Morning, Student.';
-      else if (hour < 17) greet = 'Good Afternoon, Student.';
-      document.getElementById('greeting-text').textContent = greet;
-    }
-
-    // 4. NAVIGATION & CAMPUS SCOPE
-    function switchTab(tabName) {
-      state.activeTab = tabName;
-      document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
-      document.getElementById(`view-${tabName}`).classList.remove('hidden');
-
-      document.querySelectorAll('.nav-tab').forEach(btn => {
-        const isActive = btn.dataset.tab === tabName;
-        btn.className = isActive
-          ? 'nav-tab px-3.5 py-2 rounded-lg text-sm font-semibold transition bg-nile-50 text-nile-700 flex items-center gap-1.5'
-          : 'nav-tab px-3.5 py-2 rounded-lg text-sm font-semibold transition text-slate-600 hover:text-nile-700 hover:bg-slate-50 flex items-center gap-1.5';
-      });
-
-      if (tabName === 'shelf') renderShelf();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function toggleMobileMenu() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    }
-
-    function setCampusScope(scope) {
-      state.campusScope = scope === 'nigeria' ? 'nigeria' : 'nile';
-      const saved = saveStorage('ns_scope', state.campusScope);
-      applyCampusScopeUI();
-      applyFilters();
-      showToast(saved
-        ? (state.campusScope === 'nile' ? 'Switched to Nile University Students Catalog' : 'Showing All Nigerian Universities (NUC Core)')
-        : 'Scope changed for this session, but could not be saved in this browser.');
-    }
-
-    function applyCampusScopeUI() {
-      const btnNile = document.getElementById('scope-nile');
-      const btnNg = document.getElementById('scope-nigeria');
-      const badge = document.getElementById('hero-badge-text');
-
-      if (state.campusScope === 'nile') {
-        btnNile.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition bg-white text-nile-900';
-        btnNg.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition text-nile-100 hover:text-white';
-        badge.textContent = 'Personalized for Nile University Students • Jabi Campus & Remote';
-      } else {
-        btnNg.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition bg-white text-nile-900';
-        btnNile.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition text-nile-100 hover:text-white';
-        badge.textContent = 'All Nigerian Universities • NUC CCMAS Shared Curriculum';
-      }
-    }
-
-    function toggleDataSaver() {
-      state.dataSaver = !state.dataSaver;
-      const saved = saveStorage('ns_datasaver', String(state.dataSaver));
-      applyDataSaverUI();
-      showToast(saved
-        ? (state.dataSaver ? 'Data-Saver Mode Enabled (Low-bandwidth mode)' : 'Data-Saver Mode Disabled')
-        : 'Data-Saver setting changed for this session, but could not be saved.');
-    }
-
-    function applyDataSaverUI() {
-      const label = document.getElementById('data-saver-label');
-      if (state.dataSaver) {
-        document.body.classList.add('data-saver');
-        label.textContent = 'Data Saver: On';
-      } else {
-        document.body.classList.remove('data-saver');
-        label.textContent = 'Data Saver: Off';
-      }
-    }
-
-    // 5. LIBRARY FILTERING & RENDERING
-    function renderFacultyPills() {
-      const container = document.getElementById('faculty-pills');
-      container.innerHTML = FACULTIES.map(fac => {
-        const active = fac === state.selectedFaculty;
-        return `
-          <button
-            onclick="selectFaculty(${jsArg(fac)})"
-            class="shrink-0 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition border ${
-              active
-                ? 'bg-nile-700 text-white border-nile-700 shadow-sm'
-                : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-nile-300 hover:text-nile-700'
-            }"
-          >
-            ${escapeHTML(fac)}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function selectFaculty(fac) {
-      state.selectedFaculty = fac;
-      renderFacultyPills();
-      applyFilters();
-    }
-
-    function quickSearch(term) {
-      document.getElementById('search-input').value = term;
-      applyFilters();
-      document.getElementById('resources-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function clearSearch() {
-      document.getElementById('search-input').value = '';
-      applyFilters();
-    }
-
-    function resetAllFilters() {
-      document.getElementById('search-input').value = '';
-      document.getElementById('filter-level').value = 'All';
-      document.getElementById('filter-type').value = 'All';
-      document.getElementById('sort-by').value = 'popular';
-      state.selectedFaculty = 'All Faculties';
-      renderFacultyPills();
-      applyFilters();
-    }
-
-    function applyFilters() {
-      const query = document.getElementById('search-input').value.trim().toLowerCase();
-      const level = document.getElementById('filter-level').value;
-      const type = document.getElementById('filter-type').value;
-      const sortBy = document.getElementById('sort-by').value;
-
-      document.getElementById('clear-search-btn').classList.toggle('hidden', !query);
-
-      let filtered = state.resources.filter(item => {
-        const matchesScope = state.campusScope === 'nile' || item.scope === 'all';
-        const matchesFaculty = state.selectedFaculty === 'All Faculties' || item.faculty === state.selectedFaculty;
-        const matchesLevel = level === 'All' || item.level === level;
-        const matchesType = type === 'All' || item.type === type;
-        const matchesQuery = !query || (
-          item.code.toLowerCase().includes(query) ||
-          item.title.toLowerCase().includes(query) ||
-          item.author.toLowerCase().includes(query) ||
-          item.faculty.toLowerCase().includes(query) ||
-          item.type.toLowerCase().includes(query) ||
-          item.summary.toLowerCase().includes(query)
-        );
-        return matchesScope && matchesFaculty && matchesLevel && matchesType && matchesQuery;
-      });
-
-      // Sorting
-      filtered.sort((a, b) => {
-        if (sortBy === 'popular') return b.downloads - a.downloads;
-        if (sortBy === 'rating') return b.rating - a.rating;
-        if (sortBy === 'smallest') return a.sizeMB - b.sizeMB;
-        if (sortBy === 'newest') return new Date(b.added) - new Date(a.added);
-        return 0;
-      });
-
-      renderResourceGrid(filtered);
-    }
-
-    function getTypeBadgeStyle(type) {
-      switch (type) {
-        case 'Textbook': return 'bg-nile-50 text-nile-700 border-nile-200';
-        case 'Past Questions': return 'bg-amber-50 text-amber-800 border-amber-200';
-        case 'Lecture Notes': return 'bg-sky-50 text-sky-800 border-sky-200';
-        case 'Lab Manual': return 'bg-emerald-50 text-emerald-800 border-emerald-200';
-        default: return 'bg-slate-100 text-slate-700 border-slate-200';
-      }
-    }
-
-    function isBookmarked(id) {
-      return state.shelf.some(s => s.id === id);
-    }
-
-    function renderResourceGrid(items) {
-      const grid = document.getElementById('resources-grid');
-      const empty = document.getElementById('empty-state');
-      const countEl = document.getElementById('results-count');
-
-      countEl.textContent = `Showing ${items.length} resource${items.length === 1 ? '' : 's'}`;
-
-      if (items.length === 0) {
-        grid.innerHTML = '';
-        empty.classList.remove('hidden');
-        return;
-      }
-
-      empty.classList.add('hidden');
-      grid.innerHTML = items.map(item => createResourceCardHTML(item, false)).join('');
-    }
-
-    function createResourceCardHTML(item, isShelfView = false) {
-      const saved = isBookmarked(item.id);
-      const shelfEntry = state.shelf.find(s => s.id === item.id);
-      const typeStyle = getTypeBadgeStyle(item.type);
-
-      return `
-        <article class="bg-white rounded-2xl border border-slate-200 hover:border-nile-300 hover:shadow-lg hover:shadow-nile-900/5 transition flex flex-col overflow-hidden group">
-          <!-- Classic Nile Blue Top Accent Bar -->
-          <div class="h-1.5 w-full ${item.scope === 'nile' ? 'bg-nile-700' : 'bg-sky-500'}"></div>
-
-          <div class="p-5 flex-1 flex flex-col">
-            <!-- Top Metadata Row -->
-            <div class="flex items-start justify-between gap-2 mb-3">
-              <div class="flex flex-wrap items-center gap-1.5">
-                <span class="font-mono text-xs font-bold px-2.5 py-1 rounded-md bg-nile-900 text-white">
-                  ${escapeHTML(item.code)}
-                </span>
-                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">
-                  ${escapeHTML(item.level)}
-                </span>
-                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md border ${typeStyle}">
-                  ${escapeHTML(item.type)}
-                </span>
-              </div>
-
-              <button
-                onclick="toggleBookmark(${jsArg(item.id)})"
-                class="p-1.5 rounded-lg transition ${saved ? 'text-nile-700 bg-nile-50' : 'text-slate-400 hover:text-nile-700 hover:bg-slate-50'}"
-                title="${saved ? 'Remove from Study Shelf' : 'Save to Study Shelf'}"
-              >
-                <svg class="w-5 h-5" fill="${saved ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                </svg>
-              </button>
-            </div>
-
-            <!-- Title & Author -->
-            <h3 class="font-serif font-bold text-lg text-slate-900 leading-snug mb-1.5 group-hover:text-nile-700 transition">
-              ${escapeHTML(item.title)}
-            </h3>
-            <p class="text-xs font-medium text-slate-500 mb-3">
-              ${escapeHTML(item.author)} • <span class="text-nile-700">${escapeHTML(item.faculty)}</span>
-            </p>
-
-            <!-- Summary -->
-            <p class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-4 flex-1">
-              ${escapeHTML(item.summary)}
-            </p>
-
-            ${isShelfView && shelfEntry ? `
-              <div class="mb-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                <span class="text-xs font-semibold text-slate-500">Progress:</span>
-                <select onchange="updateShelfStatus(${jsArg(item.id)}, this.value)" class="text-xs font-semibold px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 text-nile-800">
-                  <option value="To Read" ${shelfEntry.status === 'To Read' ? 'selected' : ''}>To Read</option>
-                  <option value="In Progress" ${shelfEntry.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                  <option value="Completed" ${shelfEntry.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                </select>
-              </div>
-            ` : ''}
-
-            <!-- File Info Strip -->
-            <div class="flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-100 mb-4 font-mono">
-              <span>${escapeHTML(item.sizeMB)} MB • ${escapeHTML(item.pages)} pgs</span>
-              <span class="flex items-center gap-1 text-amber-600 font-sans font-semibold">
-                ★ ${escapeHTML(item.rating)} <span class="text-slate-400 font-normal">(${escapeHTML(item.downloads.toLocaleString())})</span>
-              </span>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="grid grid-cols-2 gap-2.5">
-              <button
-                onclick="openReader(${jsArg(item.id)})"
-                class="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-xs font-semibold transition shadow-sm"
-              >
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-                Read Online
-              </button>
-              <button
-                onclick="downloadResource(${jsArg(item.id)})"
-                class="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 hover:border-nile-300 hover:bg-nile-50 text-slate-700 hover:text-nile-800 text-xs font-semibold transition"
-              >
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Study Pack
-              </button>
-            </div>
-          </div>
-        </article>
-      `;
-    }
-
-    // 6. STUDY SHELF (BOOKMARKS)
-    function toggleBookmark(id) {
-      const idx = state.shelf.findIndex(s => s.id === id);
-      let message;
-      if (idx > -1) {
-        state.shelf.splice(idx, 1);
-        message = 'Removed from My Study Shelf';
-      } else {
-        state.shelf.push({ id, status: 'To Read' });
-        message = 'Saved to My Study Shelf';
-      }
-      const saved = saveStorage('ns_shelf', state.shelf);
-      updateShelfBadges();
-      applyFilters();
-      if (state.activeTab === 'shelf') renderShelf();
-      if (state.currentReaderId === id) updateReaderBookmarkBtn();
-      showToast(saved ? message : 'Shelf changed for this session, but could not be saved in this browser.');
-    }
-
-    function updateShelfStatus(id, newStatus) {
-      const entry = state.shelf.find(s => s.id === id);
-      if (entry) {
-        entry.status = newStatus;
-        const saved = saveStorage('ns_shelf', state.shelf);
-        showToast(saved
-          ? `Marked as "${newStatus}"`
-          : 'Progress changed for this session, but could not be saved in this browser.');
-      }
-    }
-
-    function updateShelfBadges() {
-      const count = state.shelf.length;
-      document.getElementById('shelf-count-badge').textContent = count;
-      document.getElementById('mobile-shelf-count').textContent = count;
-    }
-
-    function renderShelf() {
-      const grid = document.getElementById('shelf-grid');
-      const empty = document.getElementById('shelf-empty');
-      const savedItems = state.shelf
-        .map(entry => state.resources.find(r => r.id === entry.id))
-        .filter(Boolean);
-
-      if (savedItems.length === 0) {
-        grid.innerHTML = '';
-        empty.classList.remove('hidden');
-        return;
-      }
-      empty.classList.add('hidden');
-      grid.innerHTML = savedItems.map(item => createResourceCardHTML(item, true)).join('');
-    }
-
-    // 7. BUILT-IN DOCUMENT READER & DOWNLOADER
-    function openReader(id) {
-      const item = state.resources.find(r => r.id === id);
-      if (!item) return;
-
-      state.currentReaderId = id;
-      document.getElementById('reader-code').textContent = item.code;
-      document.getElementById('reader-title').textContent = item.title;
-
-      const tocHtml = (item.toc || []).map(c => `<li class="py-1 border-b border-slate-200/60 last:border-none">${escapeHTML(c)}</li>`).join('');
-      const externalUrl = getSafeHttpUrl(item.externalLink);
-      const extLinkHtml = externalUrl
-        ? `<div class="p-4 rounded-xl bg-nile-50 border border-nile-200 text-sm flex items-center justify-between gap-3">
-             <span>External resource link attached by contributor:</span>
-             <a href="${escapeHTML(externalUrl)}" target="_blank" rel="noopener noreferrer" class="font-bold text-nile-700 underline">Open Original File &rarr;</a>
-           </div>`
-        : '';
-
-      document.getElementById('reader-body').innerHTML = `
-        <div class="pb-5 border-b border-slate-200">
-          <div class="flex flex-wrap gap-2 mb-3">
-            <span class="px-2.5 py-0.5 rounded bg-nile-100 text-nile-800 text-xs font-bold">${escapeHTML(item.faculty)}</span>
-            <span class="px-2.5 py-0.5 rounded bg-slate-100 text-slate-700 text-xs font-bold">${escapeHTML(item.level)}</span>
-            <span class="px-2.5 py-0.5 rounded bg-slate-100 text-slate-700 text-xs font-bold">${escapeHTML(item.type)}</span>
-          </div>
-          <h1 class="font-serif text-2xl sm:text-3xl font-bold mb-2">${escapeHTML(item.title)}</h1>
-          <p class="text-sm opacity-75">Compiled by: <strong>${escapeHTML(item.author)}</strong> • ${escapeHTML(item.pages)} Pages • ${escapeHTML(item.sizeMB)} MB</p>
-        </div>
-
-        ${extLinkHtml}
-
-        <div>
-          <h2 class="font-serif text-lg font-bold mb-2">Overview</h2>
-          <p>${escapeHTML(item.summary)}</p>
-        </div>
-
-        <div class="p-5 rounded-xl bg-slate-100/80 text-slate-800 border border-slate-200">
-          <h3 class="font-serif text-base font-bold text-nile-900 mb-2">Table of Contents / Modules</h3>
-          <ul class="text-sm space-y-1">${tocHtml}</ul>
-        </div>
-
-        <div class="prose max-w-none space-y-3">
-          <h2 class="font-serif text-lg font-bold">Study Preview &amp; Key Exam Notes</h2>
-          ${item.sampleContent}
-        </div>
-      `;
-
-      updateReaderBookmarkBtn();
-      document.getElementById('reader-modal').classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
-    }
-
-    function closeReader() {
-      document.getElementById('reader-modal').classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-    }
-
-    function adjustReaderFont(delta) {
-      state.readerFontSize = Math.min(22, Math.max(13, state.readerFontSize + delta));
-      document.getElementById('reader-body').style.fontSize = `${state.readerFontSize}px`;
-    }
-
-    function toggleReaderNight() {
-      state.readerNight = !state.readerNight;
-      const container = document.getElementById('reader-container');
-      const body = document.getElementById('reader-body');
-      const btn = document.getElementById('reader-night-btn');
-
-      if (state.readerNight) {
-        container.classList.replace('bg-white', 'bg-slate-900');
-        body.classList.replace('text-slate-700', 'text-slate-200');
-        btn.textContent = 'Day Mode';
-      } else {
-        container.classList.replace('bg-slate-900', 'bg-white');
-        body.classList.replace('text-slate-200', 'text-slate-700');
-        btn.textContent = 'Night Mode';
-      }
-    }
-
-    function updateReaderBookmarkBtn() {
-      const btn = document.getElementById('reader-bookmark-btn');
-      const saved = isBookmarked(state.currentReaderId);
-      btn.textContent = saved ? 'Saved on Shelf ✓' : 'Save to Shelf';
-    }
-
-    function toggleCurrentReaderBookmark() {
-      if (state.currentReaderId) toggleBookmark(state.currentReaderId);
-    }
-
-    async function copyCitation() {
-      const item = state.resources.find(r => r.id === state.currentReaderId);
-      if (!item) return;
-      const year = (item.added || '2026').slice(0, 4);
-      const citation = `${item.author} (${year}). ${item.title} [${item.code}]. NileScholar Digital Repository, Nile University of Nigeria.`;
-      try {
-        if (!navigator.clipboard?.writeText) throw new Error('Clipboard access is unavailable.');
-        await navigator.clipboard.writeText(citation);
-        showToast('APA Citation copied to clipboard!');
-      } catch (error) {
-        console.error('Unable to copy the citation.', error);
-        showToast('Could not copy citation. Check clipboard permissions and try again.');
-      }
-    }
-
-    function downloadCurrentResource() {
-      if (state.currentReaderId) downloadResource(state.currentReaderId);
-    }
-
-    function downloadResource(id) {
-      const item = state.resources.find(r => r.id === id);
-      if (!item) return;
-
-      // Increment local download counter
-      item.downloads += 1;
-      applyFilters();
-
-      // Generate a clean offline study pack file
-      const plainNotes = (new DOMParser()
-        .parseFromString(item.sampleContent, 'text/html')
-        .body.textContent || '').replace(/\s+\n/g, '\n');
-      const content = [
-        '============================================================',
-        `NILESCHOLAR STUDY PACK — NILE UNIVERSITY OF NIGERIA`,
-        '============================================================',
-        `Course Code : ${item.code}`,
-        `Title       : ${item.title}`,
-        `Author      : ${item.author}`,
-        `Faculty     : ${item.faculty} (${item.level})`,
-        `Type        : ${item.type}`,
-        '------------------------------------------------------------',
-        '\nOVERVIEW:',
-        item.summary,
-        '\nTABLE OF CONTENTS:',
-        ...(item.toc || []).map(t => `  - ${t}`),
-        '\nSTUDY NOTES & EXAM HIGHLIGHTS:',
-        plainNotes.trim(),
-        '\n============================================================',
-        'Downloaded via NileScholar • Build Your Success For A Better Society'
-      ].join('\n');
-
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${item.code.replace(/\s+/g, '_')}_Study_Pack.txt`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-
-      showToast(`Downloaded ${item.code} Study Pack`);
-    }
-
-    // 8. 5.0 CGPA CALCULATOR
-    function renderGpaRows() {
-      const container = document.getElementById('gpa-rows');
-      container.innerHTML = state.gpaCourses.map((c, idx) => `
-        <div class="grid grid-cols-12 gap-2 items-center">
-          <input
-            type="text"
-            value="${escapeHTML(c.code)}"
-            onchange="updateGpaCourse(${idx}, 'code', this.value)"
-            placeholder="Course"
-            class="col-span-5 px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm font-mono uppercase focus:outline-none focus:border-nile-600"
-          />
-          <select
-            onchange="updateGpaCourse(${idx}, 'units', Number(this.value))"
-            class="col-span-3 px-2 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm bg-white focus:outline-none focus:border-nile-600"
-          >
-            ${[1, 2, 3, 4, 5, 6].map(u => `<option value="${u}" ${c.units === u ? 'selected' : ''}>${u} Unit${u > 1 ? 's' : ''}</option>`).join('')}
-          </select>
-          <select
-            onchange="updateGpaCourse(${idx}, 'grade', Number(this.value))"
-            class="col-span-3 px-2 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm font-semibold bg-white focus:outline-none focus:border-nile-600"
-          >
-            <option value="5" ${c.grade === 5 ? 'selected' : ''}>A (5.0)</option>
-            <option value="4" ${c.grade === 4 ? 'selected' : ''}>B (4.0)</option>
-            <option value="3" ${c.grade === 3 ? 'selected' : ''}>C (3.0)</option>
-            <option value="2" ${c.grade === 2 ? 'selected' : ''}>D (2.0)</option>
-            <option value="1" ${c.grade === 1 ? 'selected' : ''}>E (1.0)</option>
-            <option value="0" ${c.grade === 0 ? 'selected' : ''}>F (0.0)</option>
-          </select>
-          <button onclick="removeGpaRow(${idx})" class="col-span-1 text-slate-400 hover:text-rose-600 flex justify-center" title="Remove course">
-            &times;
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function addGpaRow() {
-      state.gpaCourses.push({ code: `Course ${state.gpaCourses.length + 1}`, units: 3, grade: 5 });
-      saveAndRecalcGpa();
-      renderGpaRows();
-    }
-
-    function removeGpaRow(idx) {
-      if (state.gpaCourses.length <= 1) return;
-      state.gpaCourses.splice(idx, 1);
-      saveAndRecalcGpa();
-      renderGpaRows();
-    }
-
-    function updateGpaCourse(idx, field, val) {
-      state.gpaCourses[idx][field] = val;
-      saveAndRecalcGpa();
-    }
-
-    function saveAndRecalcGpa() {
-      const saved = saveStorage('ns_gpa', state.gpaCourses);
-      calculateCGPA();
-      if (!saved) showToast('CGPA changes apply for this session, but could not be saved in this browser.');
-    }
-
-    function calculateCGPA() {
-      let semUnits = 0;
-      let semPoints = 0;
-      state.gpaCourses.forEach(c => {
-        semUnits += Number(c.units);
-        semPoints += Number(c.units) * Number(c.grade);
-      });
-
-      const semGpa = semUnits > 0 ? semPoints / semUnits : 0;
-      const prevUnits = Math.max(0, Number(document.getElementById('prev-units').value) || 0);
-      const prevCgpa = Math.min(5, Math.max(0, Number(document.getElementById('prev-cgpa').value) || 0));
-
-      const totalUnits = semUnits + prevUnits;
-      const totalPoints = semPoints + (prevUnits * prevCgpa);
-      const cgpa = totalUnits > 0 ? totalPoints / totalUnits : 0;
-
-      document.getElementById('semester-gpa-val').textContent = semGpa.toFixed(2);
-      document.getElementById('total-cgpa-val').textContent = cgpa.toFixed(2);
-      document.getElementById('total-units-text').textContent = `${totalUnits} total units`;
-
-      let cls = 'Pass / Probation';
-      if (cgpa >= 4.50) cls = 'First Class Honours';
-      else if (cgpa >= 3.50) cls = 'Second Class Upper (2:1)';
-      else if (cgpa >= 2.40) cls = 'Second Class Lower (2:2)';
-      else if (cgpa >= 1.50) cls = 'Third Class Honours';
-
-      document.getElementById('degree-class-badge').textContent = cls;
-    }
-
-    // 9. STUDENT POMODORO FOCUS TIMER
-    let timerInterval = null;
-    let timerSeconds = 25 * 60;
-    let timerInitialSeconds = 25 * 60;
-    let timerEndsAt = null;
-    let audioContext = null;
-
-    function setTimerMode(minutes, label) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      timerEndsAt = null;
-      timerInitialSeconds = minutes * 60;
-      timerSeconds = timerInitialSeconds;
-      document.getElementById('timer-label').textContent = label;
-      document.getElementById('timer-start-btn').textContent = 'Start Timer';
-      updateTimerDisplay();
-
-      document.querySelectorAll('.timer-mode-btn').forEach(btn => {
-        const match = Number(btn.dataset.min) === minutes;
-        btn.className = match
-          ? 'timer-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-nile-700 text-white'
-          : 'timer-mode-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200';
-      });
-    }
-
-    function toggleTimer() {
-      const btn = document.getElementById('timer-start-btn');
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        timerSeconds = Math.max(0, Math.ceil((timerEndsAt - Date.now()) / 1000));
-        timerEndsAt = null;
-        updateTimerDisplay();
-        btn.textContent = 'Resume Timer';
-      } else {
-        if (timerSeconds <= 0) timerSeconds = timerInitialSeconds;
-        prepareAudioContext();
-        timerEndsAt = Date.now() + timerSeconds * 1000;
-        btn.textContent = 'Pause';
-        timerInterval = setInterval(updateTimerFromClock, 250);
-        updateTimerFromClock();
-      }
-    }
-
-    function resetTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      timerEndsAt = null;
-      timerSeconds = timerInitialSeconds;
-      document.getElementById('timer-start-btn').textContent = 'Start Timer';
-      updateTimerDisplay();
-    }
-
-    function updateTimerFromClock() {
-      if (timerEndsAt === null) return;
-      timerSeconds = Math.max(0, Math.ceil((timerEndsAt - Date.now()) / 1000));
-      updateTimerDisplay();
-      if (timerSeconds === 0) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        timerEndsAt = null;
-        document.getElementById('timer-start-btn').textContent = 'Start Timer';
-        playChime();
-        showToast('Study session complete! Take a breather.');
-      }
-    }
-
-    function updateTimerDisplay() {
-      const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
-      const secs = String(timerSeconds % 60).padStart(2, '0');
-      document.getElementById('timer-display').textContent = `${mins}:${secs}`;
-    }
-
-    function prepareAudioContext() {
-      const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextConstructor) return;
-      try {
-        if (!audioContext) audioContext = new AudioContextConstructor();
-        if (audioContext.state === 'suspended') {
-          audioContext.resume().catch(error => console.warn('Unable to resume audio for the timer chime.', error));
-        }
-      } catch (error) {
-        console.error('Unable to initialize audio for the timer chime.', error);
-      }
-    }
-
-    function playChime() {
-      if (!audioContext || audioContext.state !== 'running') return;
-      try {
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(587.33, audioContext.currentTime);
-        gain.gain.setValueAtTime(0.15, audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1.2);
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        osc.start();
-        osc.stop(audioContext.currentTime + 1.2);
-      } catch (error) {
-        console.error('Unable to play the timer chime.', error);
-      }
-    }
-
-    // 10. CONTRIBUTE / REQUEST MATERIAL FORM
-    function toggleContribMode() {
-      const mode = document.getElementById('contrib-mode').value;
-      const extra = document.getElementById('upload-extra-fields');
-      const btn = document.getElementById('contrib-submit-btn');
-      if (mode === 'request') {
-        extra.classList.add('hidden');
-        btn.textContent = 'Submit Material Request';
-      } else {
-        extra.classList.remove('hidden');
-        btn.textContent = 'Publish to Library';
-      }
-    }
-
-    function handleContribute(e) {
-      e.preventDefault();
-      const mode = document.getElementById('contrib-mode').value;
-      const code = document.getElementById('contrib-code').value.trim().toUpperCase();
-      const title = document.getElementById('contrib-title').value.trim();
-      const externalLinkInput = document.getElementById('contrib-link').value.trim();
-
-      if (mode === 'request') {
-        document.getElementById('contribute-form').reset();
-        showToast(`Request logged for ${code}! Fellow Students will be notified.`);
-        switchTab('library');
-        return;
-      }
-
-      const externalLink = externalLinkInput ? getSafeHttpUrl(externalLinkInput) : '';
-      if (externalLinkInput && !externalLink) {
-        showToast('External links must use a valid http:// or https:// address.');
-        return;
-      }
-
-      const newResource = {
-        id: 'custom-' + Date.now(),
-        code,
-        title,
-        author: document.getElementById('contrib-author').value.trim() || 'Nile Student Contributor',
-        faculty: document.getElementById('contrib-faculty').value,
-        level: document.getElementById('contrib-level').value,
-        type: document.getElementById('contrib-type').value,
-        sizeMB: 1.2,
-        pages: 45,
-        rating: 5.0,
-        downloads: 1,
-        scope: 'nile',
-        added: new Date().toISOString().slice(0, 10),
-        externalLink,
-        summary: document.getElementById('contrib-summary').value.trim(),
-        toc: ['1. Student Contributed Study Material', '2. Key Course Objectives & Exam Prep'],
-        sampleContent: `<p>${escapeHTML(document.getElementById('contrib-summary').value.trim())}</p>`
-      };
-
-      const custom = loadArray('ns_custom_resources', []);
-      custom.unshift(newResource);
-      if (!saveStorage('ns_custom_resources', custom)) {
-        showToast('The resource could not be saved in this browser. Check storage permissions and try again.');
-        return;
-      }
-
-      initResources();
-      document.getElementById('contribute-form').reset();
-      resetAllFilters();
-      switchTab('library');
-      showToast(`"${code}" published to NileScholar Library!`);
-    }
-
-    // 11. TOAST HELPER
-    let toastTimer = null;
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-msg').textContent = msg;
-      toast.classList.remove('hidden');
-      toast.classList.add('flex');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.add('hidden');
-        toast.classList.remove('flex');
-      }, 3200);
-    }
-  </script>
-  <script src="nilescholar-fixes.js"></script>
+  </article>`;
+}
+
+function render() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const type = document.getElementById('f-type').value;
+  const level = document.getElementById('f-level').value;
+  const sort = document.getElementById('f-sort').value;
+  let list = files.filter(f =>
+    (type === 'All' || f.type === type) &&
+    (level === 'All' || f.level === level) &&
+    (!q || [f.title, f.code, f.author, f.faculty, f.summary, f.fileName].some(x => String(x || '').toLowerCase().includes(q)))
+  );
+  list.sort((a, b) => sort === 'title' ? a.title.localeCompare(b.title)
+    : sort === 'code' ? (a.code || '~').localeCompare(b.code || '~')
+    : b.added - a.added);
+  const grid = document.getElementById('grid'), empty = document.getElementById('empty');
+  grid.innerHTML = list.map(cardHTML).join('');
+  empty.classList.toggle('hidden', list.length > 0);
+  if (!list.length) {
+    const none = files.length === 0;
+    document.getElementById('empty-title').textContent = none ? 'No files yet' : 'No matching files';
+    document.getElementById('empty-text').textContent = none
+      ? 'Add your first lecture note or textbook to start building your library.'
+      : 'Try a different search or clear a filter.';
+  }
+  document.getElementById('shelf-count').textContent = shelf.filter(id => files.some(f => f.id === id)).length;
+}
+
+function renderShelf() {
+  const items = shelf.map(id => files.find(f => f.id === id)).filter(Boolean);
+  document.getElementById('shelf-grid').innerHTML = items.map(cardHTML).join('');
+  document.getElementById('shelf-empty').classList.toggle('hidden', items.length > 0);
+}
+
+// ---------- actions ----------
+function toggleBookmark(id) {
+  const i = shelf.indexOf(id);
+  if (i > -1) shelf.splice(i, 1); else shelf.push(id);
+  saveShelf(); render();
+  if (!document.getElementById('view-shelf').classList.contains('hidden')) renderShelf();
+  toast(i > -1 ? 'Removed from shelf' : 'Saved to shelf');
+}
+
+function openFile(id) {
+  const f = files.find(x => x.id === id); if (!f) return;
+  const viewable = /^(application\/pdf|image\/|text\/)/.test(f.blob.type);
+  if (!viewable) { toast('This file type can’t be previewed. Downloading it instead.'); return downloadFile(id); }
+  const url = URL.createObjectURL(f.blob);
+  window.open(url, '_blank', 'noopener');
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+function downloadFile(id) {
+  const f = files.find(x => x.id === id); if (!f) return;
+  const url = URL.createObjectURL(f.blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = f.fileName;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function removeFile(id) {
+  const f = files.find(x => x.id === id); if (!f) return;
+  if (!confirm(`Delete "${f.title}"? This can’t be undone.`)) return;
+  try {
+    await delFile(id);
+    files = files.filter(x => x.id !== id);
+    shelf = shelf.filter(x => x !== id); saveShelf();
+    render(); renderShelf();
+    toast('File deleted');
+  } catch { toast('Could not delete the file. Try again.'); }
+}
+
+let editingId = null, editFrom = 'library';
+
+function resetForm() {
+  editingId = null;
+  document.getElementById('add-form').reset();
+  document.getElementById('add-heading').textContent = 'Add a file';
+  document.getElementById('add-sub').textContent = 'Upload a lecture note, textbook or past question pack.';
+  document.getElementById('a-file-label').textContent = 'File *';
+  document.getElementById('a-file').required = true;
+  document.getElementById('a-file-note').classList.add('hidden');
+  document.getElementById('a-submit').textContent = 'Save to library';
+}
+
+function newFile() { resetForm(); switchTab('add'); }
+
+function cancelEdit() {
+  const back = editingId ? editFrom : 'library';
+  switchTab(back);
+}
+
+function editFile(id) {
+  const f = files.find(x => x.id === id); if (!f) return;
+  editFrom = document.getElementById('view-shelf').classList.contains('hidden') ? 'library' : 'shelf';
+  switchTab('add');
+  editingId = id;
+  document.getElementById('a-title').value = f.title;
+  document.getElementById('a-code').value = f.code || '';
+  document.getElementById('a-author').value = f.author || '';
+  document.getElementById('a-type').value = f.type;
+  document.getElementById('a-level').value = f.level;
+  document.getElementById('a-faculty').value = f.faculty || '';
+  document.getElementById('a-summary').value = f.summary || '';
+  document.getElementById('add-heading').textContent = 'Edit details';
+  document.getElementById('add-sub').textContent = 'Fix any mistakes below. Your file stays as it is unless you choose a new one.';
+  document.getElementById('a-file-label').textContent = 'Replace file (optional)';
+  const note = document.getElementById('a-file-note');
+  note.textContent = `Current file: ${f.fileName} (${fmtSize(f.size)})`;
+  note.classList.remove('hidden');
+  document.getElementById('a-file').required = false;
+  document.getElementById('a-submit').textContent = 'Save changes';
+}
+
+async function handleAdd(e) {
+  e.preventDefault();
+  const file = document.getElementById('a-file').files[0];
+  const old = editingId ? files.find(x => x.id === editingId) : null;
+  if (!file && !old) return toast('Choose a file to add.');
+  const rec = {
+    ...(old || {}),
+    id: old ? old.id : 'f-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+    title: document.getElementById('a-title').value.trim(),
+    code: document.getElementById('a-code').value.trim().toUpperCase(),
+    author: document.getElementById('a-author').value.trim(),
+    type: document.getElementById('a-type').value,
+    level: document.getElementById('a-level').value,
+    faculty: document.getElementById('a-faculty').value.trim(),
+    summary: document.getElementById('a-summary').value.trim(),
+    fileName: file ? file.name : old.fileName,
+    size: file ? file.size : old.size,
+    added: old ? old.added : Date.now(),
+    blob: file || old.blob
+  };
+  const back = old ? editFrom : 'library';
+  try {
+    await putFile(rec);
+    if (old) files = files.map(x => x.id === rec.id ? rec : x); else files.push(rec);
+    render(); renderShelf();
+    switchTab(back);
+    toast(old ? 'Changes saved' : 'Saved to library');
+  } catch (err) {
+    console.error(err);
+    toast('Could not save. Your browser storage may be full or blocked.');
+  }
+}
+
+// ---------- init ----------
+(async function init() {
+  switchTab('library');
+  try {
+    db = await openDB();
+    files = await getAll();
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+  } catch (err) {
+    console.error(err);
+    toast('Storage is unavailable in this browser, so files can’t be saved.');
+  }
+  render();
+})();
+</script>
 </body>
 </html>

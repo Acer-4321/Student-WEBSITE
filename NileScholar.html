@@ -6,17 +6,19 @@
 <title>NileScholar — Study Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Cinzel:wght@400..900&family=Dancing+Script:wght@400..700&family=Exile&family=Playwrite+AU+SA+Guides&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Cinzel:wght@400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Dancing+Script:wght@400..700&family=Playwrite+AU+SA+Guides&family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script>
 tailwind.config = { theme: { extend: {
   colors: { nile: { 50:'#EFF4FF',100:'#DBE6FE',200:'#BFD3FE',500:'#3B66D4',600:'#2E52B5',700:'#274193',800:'#1E3375',900:'#162557' } },
-  fontFamily: { display:['"Asimovian"','sans-serif'], serif:['"Cinzel"','Georgia','serif'], hand:['"Playwrite AU SA Guides"','cursive'], exile:['"Exile"','sans-serif'], sans:['system-ui','-apple-system','Segoe UI','Roboto','sans-serif'] }
+  fontFamily: { display:['"Asimovian"','sans-serif'], serif:['"Cinzel"','Georgia','serif'], hand:['"Playwrite AU SA Guides"','cursive'], saira:['"Saira"','sans-serif'], sans:['system-ui','-apple-system','Segoe UI','Roboto','sans-serif'] }
 }}};
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
   body { font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; background:#F8FAFC; color:#1E293B; }
-  .font-display, .font-hand, .font-exile { font-weight:400 !important; }
+  .font-display, .font-hand { font-weight:400 !important; }
+  .font-saira { font-weight:500; }
   .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 </style>
 </head>
@@ -31,14 +33,41 @@ tailwind.config = { theme: { extend: {
       <span class="font-display text-xl text-nile-900">Nile<span class="text-nile-600">Scholar</span></span>
     </button>
     <nav class="flex items-center gap-1">
-      <button data-tab="library" onclick="switchTab('library')" class="nav-tab font-exile px-3 py-2 rounded-lg text-sm">Library</button>
-      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab font-exile px-3 py-2 rounded-lg text-sm">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-nile-100 text-nile-800">0</span></button>
-      <button data-tab="add" onclick="newFile()" class="font-exile px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
+      <button data-tab="library" onclick="switchTab('library')" class="nav-tab font-saira px-3 py-2 rounded-lg text-sm">Library</button>
+      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab font-saira px-3 py-2 rounded-lg text-sm">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-nile-100 text-nile-800">0</span></button>
+      <button data-tab="add" onclick="newFile()" class="font-saira px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
     </nav>
   </div>
 </header>
 
 <main class="flex-1 w-full max-w-6xl mx-auto px-4 py-8">
+  <!-- AUTHENTICATION -->
+  <section id="view-auth" class="view hidden">
+  <div class="max-w-md mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
+    <h1 id="auth-heading" class="font-serif text-3xl font-bold text-nile-900">Sign in</h1>
+    <p id="auth-sub" class="font-hand text-sm text-slate-600 mt-2 mb-5">NileScholar is for Nile University students. Use your school email.</p>
+    <div class="grid grid-cols-2 gap-1 p-1 mb-5 rounded-xl bg-slate-100">
+      <button id="tab-signin" type="button" onclick="setAuthMode('signin')" class="font-shadow px-3 py-2 rounded-lg text-lg">Sign in</button>
+      <button id="tab-signup" type="button" onclick="setAuthMode('signup')" class="font-shadow px-3 py-2 rounded-lg text-lg">Create account</button>
+    </div>
+    <div id="auth-msg" class="hidden mb-4 p-3 rounded-xl bg-nile-50 border border-nile-200 text-sm text-nile-900"></div>
+    <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nile University email</label>
+        <input id="l-email" required type="email" autocomplete="username" placeholder="yourname@nileuniversity.edu.ng" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-300 focus:outline-none focus:border-nile-600" />
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Password</label>
+        <input id="l-pass" required type="password" autocomplete="current-password" placeholder="At least 8 characters" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-300 focus:outline-none focus:border-nile-600" />
+      </div>
+      <div id="confirm-wrap" class="hidden">
+        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Confirm password</label>
+        <input id="l-confirm" type="password" autocomplete="new-password" placeholder="Type it again" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-300 focus:outline-none focus:border-nile-600" />
+      </div>
+      <button id="auth-submit" type="submit" class="w-full font-shadow px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-lg">Sign in</button>
+    </form>
+  </div>
+  </section>
 
   <!-- LIBRARY -->
   <section id="view-library" class="view">
@@ -48,15 +77,15 @@ tailwind.config = { theme: { extend: {
     </div>
     <div class="flex flex-wrap gap-2.5 mb-6">
       <input id="search" oninput="render()" type="search" placeholder="Search title, course code or author" class="flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-nile-600" />
-      <select id="f-type" onchange="render()" class="font-exile px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
+      <select id="f-type" onchange="render()" class="font-saira px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
         <option value="All">All types</option>
         <option>Lecture Notes</option><option>Textbook</option><option>Past Questions</option><option>Lab Manual</option><option>Other</option>
       </select>
-      <select id="f-level" onchange="render()" class="font-exile px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
+      <select id="f-level" onchange="render()" class="font-saira px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
         <option value="All">All levels</option>
         <option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option>
       </select>
-      <select id="f-sort" onchange="render()" class="font-exile px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
+      <select id="f-sort" onchange="render()" class="font-saira px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
         <option value="newest">Newest first</option><option value="title">Title A–Z</option><option value="code">Course code</option>
       </select>
     </div>
@@ -64,7 +93,7 @@ tailwind.config = { theme: { extend: {
     <div id="empty" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
       <h3 id="empty-title" class="font-serif text-xl font-bold text-slate-800 mb-2">No files yet</h3>
       <p id="empty-text" class="text-sm text-slate-500 max-w-md mx-auto mb-5">Add your first lecture note or textbook to start building your library.</p>
-      <button onclick="newFile()" class="font-exile px-5 py-2.5 rounded-xl bg-nile-700 text-white text-sm hover:bg-nile-800">Add a file</button>
+      <button onclick="newFile()" class="font-saira px-5 py-2.5 rounded-xl bg-nile-700 text-white text-sm hover:bg-nile-800">Add a file</button>
     </div>
   </section>
 
@@ -129,8 +158,8 @@ tailwind.config = { theme: { extend: {
           <textarea id="a-summary" rows="3" placeholder="Chapters covered, exam years, anything useful" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600"></textarea>
         </div>
         <div class="flex justify-end gap-3 pt-2">
-          <button type="button" onclick="cancelEdit()" class="font-exile px-5 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50">Cancel</button>
-          <button id="a-submit" type="submit" class="font-exile px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm">Save to library</button>
+          <button type="button" onclick="cancelEdit()" class="font-saira px-5 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50">Cancel</button>
+          <button id="a-submit" type="submit" class="font-saira px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm">Save to library</button>
         </div>
       </form>
     </div>
@@ -181,7 +210,7 @@ function switchTab(name) {
   if (name !== 'add') resetForm();
   document.getElementById('view-' + name).classList.remove('hidden');
   document.querySelectorAll('.nav-tab').forEach(b => {
-    b.className = 'nav-tab font-exile px-3 py-2 rounded-lg text-sm ' + (b.dataset.tab === name ? 'bg-nile-50 text-nile-700' : 'text-slate-600 hover:bg-slate-50');
+    b.className = 'nav-tab font-saira px-3 py-2 rounded-lg text-sm ' + (b.dataset.tab === name ? 'bg-nile-50 text-nile-700' : 'text-slate-600 hover:bg-slate-50');
   });
   if (name === 'shelf') renderShelf();
   window.scrollTo({ top: 0 });
@@ -197,8 +226,8 @@ function cardHTML(f) {
       <div class="flex items-start justify-between gap-2 mb-3">
         <div class="flex flex-wrap items-center gap-1.5">
           ${f.code ? `<span class="font-display text-xs px-2.5 py-1 rounded-md bg-nile-900 text-white">${esc(f.code)}</span>` : ''}
-          <span class="font-exile text-[11px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">${esc(f.level)}</span>
-          <span class="font-exile text-[11px] px-2 py-0.5 rounded-md bg-nile-50 text-nile-700">${esc(f.type)}</span>
+          <span class="font-saira text-[11px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">${esc(f.level)}</span>
+          <span class="font-saira text-[11px] px-2 py-0.5 rounded-md bg-nile-50 text-nile-700">${esc(f.type)}</span>
         </div>
         <button onclick="toggleBookmark(${arg(f.id)})" title="${saved ? 'Remove from shelf' : 'Save to shelf'}" class="p-1.5 rounded-lg ${saved ? 'text-nile-700 bg-nile-50' : 'text-slate-400 hover:text-nile-700 hover:bg-slate-50'}">
           <svg class="w-5 h-5" fill="${saved ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
@@ -209,10 +238,10 @@ function cardHTML(f) {
       ${f.summary ? `<p class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-3">${esc(f.summary)}</p>` : ''}
       <div class="mt-auto pt-3 border-t border-slate-100 text-xs text-slate-500 mb-3 truncate" title="${esc(f.fileName)}">${esc(f.fileName)} • ${fmtSize(f.size)}</div>
       <div class="grid grid-cols-2 gap-2">
-        <button onclick="openFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-xs">Open</button>
-        <button onclick="downloadFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Download</button>
-        <button onclick="editFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Edit details</button>
-        <button onclick="removeFile(${arg(f.id)})" class="font-exile px-3 py-2 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-700 text-slate-500 text-xs">Delete</button>
+        <button onclick="openFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-xs">Open</button>
+        <button onclick="downloadFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Download</button>
+        <button onclick="editFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Edit details</button>
+        <button onclick="removeFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-700 text-slate-500 text-xs">Delete</button>
       </div>
     </div>
   </article>`;
@@ -377,6 +406,72 @@ async function handleAdd(e) {
   }
   render();
 })();
+
+// ---------- Supabase config (FILL THESE IN) ----------
+const SUPABASE_URL = 'https://YOUR-PROJECT-ID.supabase.co';
+const SUPABASE_KEY = 'YOUR-PUBLISHABLE-OR-ANON-KEY';
+const NILE_EMAIL = /^[^\s@]+@nileuniversity\.edu\.ng$/i;
+const configured = !SUPABASE_URL.includes('YOUR-PROJECT') && !SUPABASE_KEY.includes('YOUR-PUBLISHABLE');
+const sb = configured && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+const setupMsg = () => !configured
+  ? 'Setup needed: the Supabase URL and key haven’t been added to this file yet (top of the script).'
+  : 'Could not load the Supabase library. Check your internet connection and refresh.';
+let session = null;
+
+let authMode = 'signin';
+function setAuthMode(mode) {
+  authMode = mode;
+  const up = mode === 'signup';
+  document.getElementById('auth-heading').textContent = up ? 'Create account' : 'Sign in';
+  document.getElementById('auth-sub').textContent = up
+    ? 'Use your Nile University email. We’ll send a link to confirm it’s really yours.'
+    : 'NileScholar is for Nile University students. Use your school email.';
+  document.getElementById('confirm-wrap').classList.toggle('hidden', !up);
+  document.getElementById('l-confirm').required = up;
+  document.getElementById('l-pass').autocomplete = up ? 'new-password' : 'current-password';
+  document.getElementById('auth-submit').textContent = up ? 'Create account' : 'Sign in';
+  document.getElementById('tab-signin').className = 'font-shadow px-3 py-2 rounded-lg text-lg ' + (up ? 'text-slate-500' : 'bg-white text-nile-700 shadow-sm');
+  document.getElementById('tab-signup').className = 'font-shadow px-3 py-2 rounded-lg text-lg ' + (up ? 'bg-white text-nile-700 shadow-sm' : 'text-slate-500');
+  showAuthMsg('');
+}
+function showAuthMsg(text) {
+  const m = document.getElementById('auth-msg');
+  m.textContent = text; m.classList.toggle('hidden', !text);
+  if (text) m.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+async function handleSignOut() { await sb.auth.signOut(); toast('Signed out'); }
+
+async function handleAuth(e) {
+  e.preventDefault();
+  if (!sb) return showAuthMsg(setupMsg());
+  const email = document.getElementById('l-email').value.trim().toLowerCase();
+  const password = document.getElementById('l-pass').value;
+  if (!NILE_EMAIL.test(email)) return showAuthMsg('Please use your Nile University email, like yourname@nileuniversity.edu.ng.');
+  const btn = document.getElementById('auth-submit'), label = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Please wait…';
+  try {
+    if (authMode === 'signup') {
+      if (password.length < 8) return showAuthMsg('Choose a password with at least 8 characters.');
+      if (password !== document.getElementById('l-confirm').value) return showAuthMsg('The two passwords don’t match.');
+      const options = location.protocol.startsWith('http') ? { emailRedirectTo: location.origin + location.pathname } : {};
+      const { data, error } = await sb.auth.signUp({ email, password, options });
+      if (error) return showAuthMsg(error.message);
+      if (!data.session) {
+        document.getElementById('auth-form').reset();
+        showAuthMsg('Almost done! Check your ' + email.split('@')[1] + ' inbox (and spam) for a confirmation link. If you already have an account, use Sign in instead.');
+      }
+    } else {
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) return showAuthMsg(/confirm/i.test(error.message) ? 'Please confirm your email first. Check your inbox for the link.' : error.message);
+      document.getElementById('auth-form').reset();
+    }
+  } catch (err) {
+    console.error(err);
+    showAuthMsg('Could not reach the server. Check your connection, and that the Supabase URL and key are correct.');
+  } finally {
+    btn.disabled = false; btn.textContent = label;
+  }
+}
 </script>
 </body>
 </html>

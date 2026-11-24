@@ -6,158 +6,144 @@
 <title>NileScholar — Study Library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Cinzel:wght@400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Dancing+Script:wght@400..700&family=Playwrite+AU+SA+Guides&family=Saira:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Playwrite+AU+SA+Guides&family=Saira:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 tailwind.config = { theme: { extend: {
-  colors: { nile: { 50:'#EFF4FF',100:'#DBE6FE',200:'#BFD3FE',500:'#3B66D4',600:'#2E52B5',700:'#274193',800:'#1E3375',900:'#162557' } },
-  fontFamily: { display:['"Asimovian"','sans-serif'], serif:['"Cinzel"','Georgia','serif'], hand:['"Playwrite AU SA Guides"','cursive'], saira:['"Saira"','sans-serif'], sans:['system-ui','-apple-system','Segoe UI','Roboto','sans-serif'] }
+  colors: {
+    nile: { 50:'#EFF4FF',100:'#DBE6FE',200:'#BFD3FE',300:'#93B4FC',500:'#3B66D4',600:'#2E52B5',700:'#274193',800:'#1E3375',900:'#162557' },
+    gold: { 50:'#FFF9E6',100:'#FDEFBF',400:'#F7C948',500:'#F2B01E',600:'#D99A0B',700:'#8A5A00' }
+  },
+  fontFamily: { display:['"Asimovian"','sans-serif'], hand:['"Playwrite AU SA Guides"','cursive'], sans:['"Saira"','system-ui','-apple-system','"Segoe UI"','Roboto','sans-serif'] }
 }}};
 </script>
 <style>
-  html { color-scheme:light; }
-  html[data-theme="dark"] { color-scheme:dark; }
-  body { font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; background:#F8FAFC; color:#1E293B; transition:background-color .2s ease,color .2s ease; }
-  html[data-theme="dark"] body { background:#0F172A !important; color:#E2E8F0 !important; }
-  html[data-theme="dark"] .bg-white, html[data-theme="dark"] .bg-white\/95 { background-color:#172554 !important; }
-  html[data-theme="dark"] .bg-slate-50 { background-color:#1E293B !important; }
-  html[data-theme="dark"] .bg-slate-100 { background-color:#334155 !important; }
-  html[data-theme="dark"] .bg-nile-50 { background-color:#1E3A5F !important; }
-  html[data-theme="dark"] .bg-nile-100 { background-color:#25466D !important; }
-  html[data-theme="dark"] .text-nile-900, html[data-theme="dark"] .text-slate-900, html[data-theme="dark"] .text-slate-800 { color:#F1F5F9 !important; }
-  html[data-theme="dark"] .text-nile-700, html[data-theme="dark"] .text-nile-800, html[data-theme="dark"] .text-nile-600 { color:#BFDBFE !important; }
-  html[data-theme="dark"] .text-slate-700, html[data-theme="dark"] .text-slate-600 { color:#CBD5E1 !important; }
-  html[data-theme="dark"] .text-slate-500, html[data-theme="dark"] .text-slate-400 { color:#94A3B8 !important; }
-  html[data-theme="dark"] .border-slate-100, html[data-theme="dark"] .border-slate-200, html[data-theme="dark"] .border-slate-300 { border-color:#334155 !important; }
-  html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] textarea { background-color:#0F172A !important; color:#E2E8F0 !important; border-color:#475569 !important; }
-  html[data-theme="dark"] input::placeholder, html[data-theme="dark"] textarea::placeholder { color:#64748B !important; }
-  html[data-theme="dark"] .hover\:bg-slate-50:hover { background-color:#334155 !important; }
-  html[data-theme="dark"] .hover\:bg-nile-50:hover { background-color:#1E3A5F !important; }
-  html[data-theme="dark"] .hover\:border-nile-300:hover { border-color:#60A5FA !important; }
-  html[data-theme="dark"] .bg-rose-50 { background-color:#4C1D2B !important; }
-  html[data-theme="dark"] .hover\:text-rose-700:hover { color:#FDA4AF !important; }
-  html[data-theme="dark"] #toast { background-color:#1E3A8A !important; }
-  html[data-theme="dark"] #tab-signin.bg-white, html[data-theme="dark"] #tab-signup.bg-white { background-color:#334155 !important; color:#DBEAFE !important; }
+  body { font-family:'Saira',system-ui,sans-serif; color:#1E293B; font-size:15px;
+    background:radial-gradient(1000px 420px at 85% -80px,#DBE6FE 0,transparent 70%),radial-gradient(800px 380px at -10% 20%,#FDEFBF 0,transparent 65%),#F8FAFC; background-attachment:fixed; }
   .font-display, .font-hand { font-weight:400 !important; }
-  .font-saira { font-weight:500; }
+  :focus-visible { outline:2px solid #2E52B5; outline-offset:2px; }
+  .inp { width:100%; padding:.625rem .875rem; border:1px solid #CBD5E1; border-radius:.75rem; font-size:.9375rem; background:#fff; }
+  .inp:focus { outline:none; border-color:#2E52B5; box-shadow:0 0 0 3px #BFD3FE; }
+  .sel { width:auto; }
+  .lbl { display:block; font-size:.8125rem; font-weight:600; color:#334155; margin-bottom:.375rem; }
+  .nav-tab { padding:.5rem .75rem; border-radius:.5rem; font-size:.9375rem; font-weight:500; color:#475569; }
+  .nav-tab:hover { background:#F1F5F9; }
+  .nav-tab[aria-current="page"] { background:#EFF4FF; color:#274193; }
+  .mtab { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 0; font-size:.75rem; font-weight:500; color:#475569; }
+  .mtab[aria-current="page"] { color:#274193; }
+  .view { animation:fade .2s ease; }
+  @keyframes fade { from { opacity:0; } to { opacity:1; } }
   .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  @media (prefers-reduced-motion:reduce) { .view, .animate-pulse { animation:none; } .card { transition:none !important; } }
 </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased pb-20 md:pb-0">
 
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200">
-  <div class="max-w-6xl mx-auto px-4 py-2 min-h-[4rem] flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-    <button onclick="switchTab('library')" class="flex items-center gap-3 text-left">
-      <div class="w-10 h-10 rounded-xl bg-nile-700 text-white flex items-center justify-center">
-        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-      </div>
-      <span class="font-display text-xl text-nile-900">Nile<span class="text-nile-600">Scholar</span></span>
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <button onclick="switchTab('library')" class="flex items-center gap-3" aria-label="NileScholar home">
+      <span class="w-10 h-10 rounded-xl bg-nile-700 text-white flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      </span>
+      <span class="font-display text-xl text-nile-900">Nile<span class="text-gold-700">Scholar</span></span>
     </button>
-    <nav id="main-nav" class="flex flex-wrap items-center justify-end gap-1">
-      <button data-tab="library" onclick="switchTab('library')" class="nav-tab font-saira px-3 py-2 rounded-lg text-sm">Library</button>
-      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab font-saira px-3 py-2 rounded-lg text-sm">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-nile-100 text-nile-800">0</span></button>
-      <button id="nav-add" data-tab="add" onclick="newFile()" class="font-saira px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
-      <button id="nav-signin" data-tab="auth" onclick="switchTab('auth')" class="font-saira px-3 py-2 rounded-lg text-sm text-nile-700 hover:bg-nile-50">Sign in</button>
-      <button id="nav-signout" onclick="handleSignOut()" class="hidden font-saira px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">Sign out</button>
-      <button id="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to dark mode" aria-pressed="false" class="font-saira px-3 py-2 rounded-lg text-sm text-nile-700 hover:bg-nile-50 inline-flex items-center gap-1.5"><span id="theme-icon" aria-hidden="true">☾</span><span id="theme-label">Dark mode</span></button>
+    <nav class="hidden md:flex items-center gap-1" aria-label="Main">
+      <button data-tab="library" onclick="switchTab('library')" class="nav-tab">Library</button>
+      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-nile-100 text-nile-800">0</span></button>
+      <button onclick="newFile()" class="ml-2 px-4 py-2 rounded-lg text-sm font-semibold bg-gold-500 text-nile-900 hover:bg-gold-400">Add file</button>
+      <button id="nav-signin" data-tab="auth" onclick="switchTab('auth')" class="nav-tab">Sign in</button>
+      <div id="nav-user" class="hidden items-center ml-1">
+        <button onclick="handleSignOut()" class="nav-tab">Sign out</button>
+      </div>
     </nav>
   </div>
 </header>
 
-<main class="flex-1 w-full max-w-6xl mx-auto px-4 py-8">
+<main class="flex-1 w-full max-w-6xl mx-auto px-4 py-6 sm:py-8">
 
   <!-- LIBRARY -->
   <section id="view-library" class="view hidden">
-    <div class="mb-6">
-      <h1 class="font-serif text-3xl font-bold text-nile-900">Your library</h1>
-      <p class="font-hand text-sm text-slate-600 mt-2">Shared lecture notes, textbooks and past questions. Anyone can browse; sign in to upload and manage your own files.</p>
+    <div class="rounded-3xl bg-gradient-to-br from-nile-900 via-nile-800 to-nile-600 text-white p-6 sm:p-10 mb-6">
+      <h1 class="text-3xl sm:text-4xl font-bold leading-tight">Find the notes you need</h1>
+      <p class="font-hand text-sm leading-relaxed text-nile-100 mt-3 max-w-xl">Shared lecture notes, textbooks and past questions. Browse freely; sign in to upload and manage your own files.</p>
+      <p id="stats" class="text-sm text-nile-200 mt-3 h-5"></p>
+      <div class="relative mt-4 max-w-2xl">
+        <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
+        <input id="search" oninput="render()" type="search" aria-label="Search files" placeholder="Search title, course code or author" class="w-full pl-12 pr-4 py-3.5 rounded-2xl text-slate-900 bg-white text-base placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-gold-500/50" />
+      </div>
     </div>
-    <div class="flex flex-wrap gap-2.5 mb-6">
-      <input id="search" oninput="render()" type="search" placeholder="Search title, course code or author" class="flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-nile-600" />
-      <select id="f-type" onchange="render()" class="font-saira px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
-        <option value="All">All types</option>
-        <option>Lecture Notes</option><option>Textbook</option><option>Past Questions</option><option>Lab Manual</option><option>Other</option>
-      </select>
-      <select id="f-level" onchange="render()" class="font-saira px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
-        <option value="All">All levels</option>
-        <option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option>
-      </select>
-      <select id="f-sort" onchange="render()" class="font-saira px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-sm">
-        <option value="newest">Newest first</option><option value="title">Title A–Z</option><option value="code">Course code</option>
-      </select>
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <div id="chips" class="flex flex-wrap gap-2" role="group" aria-label="Filter by type"></div>
+      <div class="flex gap-2">
+        <select id="f-level" onchange="render()" aria-label="Level" class="inp sel">
+          <option value="All">All levels</option><option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option>
+        </select>
+        <select id="f-sort" onchange="render()" aria-label="Sort" class="inp sel">
+          <option value="newest">Newest first</option><option value="title">Title A–Z</option><option value="code">Course code</option>
+        </select>
+      </div>
     </div>
     <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     <div id="empty" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
-      <h3 id="empty-title" class="font-serif text-xl font-bold text-slate-800 mb-2">No files yet</h3>
-      <p id="empty-text" class="text-sm text-slate-500 max-w-md mx-auto mb-5">Add the first lecture note or textbook to start building the shared library.</p>
-      <button onclick="newFile()" class="font-saira px-5 py-2.5 rounded-xl bg-nile-700 text-white text-sm hover:bg-nile-800">Add a file</button>
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gold-50 text-gold-700 flex items-center justify-center">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+      </div>
+      <h3 id="empty-title" class="text-xl font-bold text-slate-800 mb-2">No files yet</h3>
+      <p id="empty-text" class="text-sm text-slate-600 max-w-md mx-auto mb-5">Add the first lecture note or textbook to start building the shared library.</p>
+      <button onclick="newFile()" class="px-5 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-nile-900 text-sm font-semibold">Add a file</button>
     </div>
   </section>
 
   <!-- SHELF -->
   <section id="view-shelf" class="view hidden">
     <div class="mb-6">
-      <h1 class="font-serif text-3xl font-bold text-nile-900">Study shelf</h1>
-      <p class="font-hand text-sm text-slate-600 mt-2">Files you've bookmarked to read this semester.</p>
+      <h1 class="text-3xl font-bold text-nile-900">Study shelf</h1>
+      <p class="font-hand text-sm text-slate-600 mt-2">Files you’ve bookmarked to read this semester.</p>
     </div>
     <div id="shelf-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     <div id="shelf-empty" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
-      <h3 class="font-serif text-xl font-bold text-slate-800 mb-2">Your shelf is empty</h3>
-      <p class="text-sm text-slate-500">Tap the bookmark on any file in the library to save it here.</p>
+      <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-nile-50 text-nile-700 flex items-center justify-center">
+        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+      </div>
+      <h3 class="text-xl font-bold text-slate-800 mb-2">Your shelf is empty</h3>
+      <p class="text-sm text-slate-600">Tap the bookmark on any file in the library to save it here.</p>
     </div>
   </section>
 
   <!-- ADD / EDIT -->
   <section id="view-add" class="view hidden">
     <div class="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
-      <h1 id="add-heading" class="font-serif text-3xl font-bold text-nile-900">Add a file</h1>
-      <p id="add-sub" class="font-hand text-sm text-slate-600 mt-2 mb-6">Upload a lecture note, textbook or past question pack to the shared library.</p>
+      <h1 id="add-heading" class="text-3xl font-bold text-nile-900">Add a file</h1>
+      <p id="add-sub" class="font-hand text-sm leading-relaxed text-slate-600 mt-2 mb-6">Upload a lecture note, textbook or past question pack to the shared library.</p>
       <form id="add-form" onsubmit="handleAdd(event)" class="space-y-4">
         <div>
-          <label id="a-file-label" class="block text-xs font-semibold text-slate-700 mb-1.5">File *</label>
-          <p id="a-file-note" class="hidden text-xs text-slate-500 mb-2"></p>
+          <label id="a-file-label" for="a-file" class="lbl">File *</label>
+          <p id="a-file-note" class="hidden text-sm text-slate-600 mb-2"></p>
           <input id="a-file" type="file" required accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.epub,.jpg,.jpeg,.png" class="w-full text-sm file:mr-3 file:px-4 file:py-2 file:rounded-lg file:border-0 file:bg-nile-50 file:text-nile-700 file:font-semibold hover:file:bg-nile-100 border border-dashed border-slate-300 rounded-xl p-3" />
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Title *</label>
-          <input id="a-title" required type="text" placeholder="e.g. Data Structures lecture pack" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
+          <label for="a-title" class="lbl">Title *</label>
+          <input id="a-title" required type="text" placeholder="e.g. Data Structures lecture pack" class="inp" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Course code</label>
-            <input id="a-code" type="text" placeholder="e.g. CSC 201" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm uppercase focus:outline-none focus:border-nile-600" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Author / lecturer</label>
-            <input id="a-author" type="text" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
-          </div>
+          <div><label for="a-code" class="lbl">Course code</label><input id="a-code" type="text" placeholder="e.g. CSC 201" class="inp uppercase" /></div>
+          <div><label for="a-author" class="lbl">Author / lecturer</label><input id="a-author" type="text" class="inp" /></div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Type</label>
-            <select id="a-type" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
-              <option>Lecture Notes</option><option>Textbook</option><option>Past Questions</option><option>Lab Manual</option><option>Other</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Level</label>
-            <select id="a-level" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
-              <option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Faculty / department</label>
-            <input id="a-faculty" type="text" placeholder="e.g. Computing" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600" />
-          </div>
+          <div><label for="a-type" class="lbl">Type</label>
+            <select id="a-type" class="inp"><option>Lecture Notes</option><option>Textbook</option><option>Past Questions</option><option>Lab Manual</option><option>Other</option></select></div>
+          <div><label for="a-level" class="lbl">Level</label>
+            <select id="a-level" class="inp"><option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>PG</option></select></div>
+          <div><label for="a-faculty" class="lbl">Faculty / department</label><input id="a-faculty" type="text" placeholder="e.g. Computing" class="inp" /></div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Description</label>
-          <textarea id="a-summary" rows="3" placeholder="Chapters covered, exam years, anything useful" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-nile-600"></textarea>
+          <label for="a-summary" class="lbl">Description</label>
+          <textarea id="a-summary" rows="3" placeholder="Chapters covered, exam years, anything useful" class="inp"></textarea>
         </div>
         <div class="flex justify-end gap-3 pt-2">
-          <button type="button" onclick="cancelEdit()" class="font-saira px-5 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50">Cancel</button>
-          <button id="a-submit" type="submit" class="font-saira px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm">Save to library</button>
+          <button type="button" onclick="cancelEdit()" class="px-5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>
+          <button id="a-submit" type="submit" class="px-6 py-2.5 rounded-xl bg-gold-500 hover:bg-gold-400 text-nile-900 text-sm font-semibold disabled:opacity-60">Save to library</button>
         </div>
       </form>
     </div>
@@ -166,52 +152,44 @@ tailwind.config = { theme: { extend: {
   <!-- AUTH -->
   <section id="view-auth" class="view hidden">
     <div class="max-w-md mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
-      <h1 id="auth-heading" class="font-serif text-3xl font-bold text-nile-900">Sign in</h1>
-      <p id="auth-sub" class="font-hand text-sm text-slate-600 mt-2 mb-5">Sign in with your Nile University email to upload files and manage your own uploads.</p>
+      <h1 id="auth-heading" class="text-3xl font-bold text-nile-900">Sign in</h1>
+      <p id="auth-sub" class="font-hand text-sm leading-relaxed text-slate-600 mt-2 mb-5">Sign in with your Nile University email to upload files and manage your own uploads.</p>
       <div class="grid grid-cols-2 gap-1 p-1 mb-5 rounded-xl bg-slate-100">
-        <button id="tab-signin" type="button" onclick="setAuthMode('signin')" class="font-saira px-3 py-2 rounded-lg text-sm">Sign in</button>
-        <button id="tab-signup" type="button" onclick="setAuthMode('signup')" class="font-saira px-3 py-2 rounded-lg text-sm">Create account</button>
+        <button id="tab-signin" type="button" onclick="setAuthMode('signin')" class="px-3 py-2 rounded-lg text-sm font-medium">Sign in</button>
+        <button id="tab-signup" type="button" onclick="setAuthMode('signup')" class="px-3 py-2 rounded-lg text-sm font-medium">Create account</button>
       </div>
-      <div id="auth-msg" class="hidden mb-4 p-3 rounded-xl bg-nile-50 border border-nile-200 text-sm text-nile-900"></div>
+      <div id="auth-msg" role="status" class="hidden mb-4 p-3 rounded-xl bg-nile-50 border border-nile-200 text-sm text-nile-900"></div>
       <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nile University email</label>
-          <input id="l-email" required type="email" autocomplete="username" placeholder="yourname@nileuniversity.edu.ng" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-300 focus:outline-none focus:border-nile-600" />
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Password</label>
-          <input id="l-pass" required type="password" autocomplete="current-password" placeholder="At least 8 characters" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-300 focus:outline-none focus:border-nile-600" />
-        </div>
-        <div id="confirm-wrap" class="hidden">
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Confirm password</label>
-          <input id="l-confirm" type="password" autocomplete="new-password" placeholder="Type it again" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm placeholder:text-slate-300 focus:outline-none focus:border-nile-600" />
-        </div>
-        <button id="auth-submit" type="submit" class="w-full font-saira px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm">Sign in</button>
+        <div><label for="l-email" class="lbl">Nile University email</label>
+          <input id="l-email" required type="email" autocomplete="username" placeholder="yourname@nileuniversity.edu.ng" class="inp" /></div>
+        <div><label for="l-pass" class="lbl">Password</label>
+          <input id="l-pass" required type="password" autocomplete="current-password" placeholder="At least 8 characters" class="inp" /></div>
+        <div id="confirm-wrap" class="hidden"><label for="l-confirm" class="lbl">Confirm password</label>
+          <input id="l-confirm" type="password" autocomplete="new-password" placeholder="Type it again" class="inp" /></div>
+        <button id="auth-submit" type="submit" class="w-full px-6 py-2.5 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm font-semibold disabled:opacity-60">Sign in</button>
       </form>
     </div>
   </section>
 </main>
 
-<div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-nile-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium"></div>
+<footer class="border-t border-slate-200 bg-white/70 py-6 px-4 text-center text-slate-600">
+  <p class="font-hand text-xs leading-loose max-w-xl mx-auto">An independent project. Feel free to add your own files and help the library grow.</p>
+</footer>
+
+<nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex items-end px-2" style="padding-bottom:env(safe-area-inset-bottom,0px)" aria-label="Main">
+  <button data-tab="library" onclick="switchTab('library')" class="mtab">
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>Library</button>
+  <button data-tab="shelf" onclick="switchTab('shelf')" class="mtab">
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>Shelf</button>
+  <button onclick="newFile()" class="mtab" aria-label="Add file">
+    <span class="w-12 h-12 -mt-5 rounded-full bg-gold-500 text-nile-900 flex items-center justify-center shadow-lg"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg></span>Add</button>
+  <button id="m-account" data-tab="auth" onclick="accountTap()" class="mtab">
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M16 8a4 4 0 11-8 0 4 4 0 018 0zM4 20a8 8 0 0116 0"/></svg><span id="m-account-label">Sign in</span></button>
+</nav>
+
+<div id="toast" role="status" class="fixed bottom-24 md:bottom-5 right-4 left-4 md:left-auto z-50 hidden bg-nile-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium"></div>
 
 <script>
-// ---------- appearance ----------
-function applyTheme(theme) {
-  const dark = theme === 'dark';
-  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-  const button = document.getElementById('theme-toggle');
-  document.getElementById('theme-icon').textContent = dark ? '☀' : '☾';
-  document.getElementById('theme-label').textContent = dark ? 'Light mode' : 'Dark mode';
-  button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-  button.setAttribute('aria-pressed', String(dark));
-}
-function toggleTheme() {
-  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  try { localStorage.setItem('ns_theme', next); } catch {}
-  applyTheme(next);
-}
-try { applyTheme(localStorage.getItem('ns_theme') || 'light'); } catch { applyTheme('light'); }
-
 // ---------- helpers ----------
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arg = v => esc(JSON.stringify(String(v)));
@@ -224,7 +202,7 @@ function toast(msg) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.add('hidden'), 3000);
 }
 
-// ---------- Supabase config (FILL THESE IN) ----------
+// ---------- Supabase config ----------
 const SUPABASE_URL = 'https://eoxymnmhngranbwjlees.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_JeJMsbII_OYP-w9D81CGOQ_nadZ3x1i';
 const BUCKET = 'study-files';
@@ -250,8 +228,8 @@ function setAuthMode(mode) {
   document.getElementById('l-confirm').required = up;
   document.getElementById('l-pass').autocomplete = up ? 'new-password' : 'current-password';
   document.getElementById('auth-submit').textContent = up ? 'Create account' : 'Sign in';
-  document.getElementById('tab-signin').className = 'font-saira px-3 py-2 rounded-lg text-sm ' + (up ? 'text-slate-500' : 'bg-white text-nile-700 shadow-sm');
-  document.getElementById('tab-signup').className = 'font-saira px-3 py-2 rounded-lg text-sm ' + (up ? 'bg-white text-nile-700 shadow-sm' : 'text-slate-500');
+  document.getElementById('tab-signin').className = 'px-3 py-2 rounded-lg text-sm font-medium ' + (up ? 'text-slate-600' : 'bg-white text-nile-700 shadow-sm');
+  document.getElementById('tab-signup').className = 'px-3 py-2 rounded-lg text-sm font-medium ' + (up ? 'bg-white text-nile-700 shadow-sm' : 'text-slate-600');
   showAuthMsg('');
 }
 function showAuthMsg(text) {
@@ -264,17 +242,14 @@ async function handleSignOut() {
   if (!sb) return toast('Supabase is not configured yet.');
   try {
     const { error } = await sb.auth.signOut();
-    if (error) {
-      console.error(error);
-      toast('Could not sign out. Try again.');
-      return;
-    }
+    if (error) { console.error(error); toast('Could not sign out. Try again.'); return; }
     toast('Signed out');
   } catch (err) {
     console.error(err);
     toast('Could not sign out. Check your connection and try again.');
   }
 }
+function accountTap() { return session && session.user ? handleSignOut() : switchTab('auth'); }
 
 async function handleAuth(e) {
   e.preventDefault();
@@ -313,7 +288,9 @@ async function handleAuth(e) {
 function updateAuthUI() {
   const signedIn = Boolean(session && session.user);
   document.getElementById('nav-signin').classList.toggle('hidden', signedIn);
-  document.getElementById('nav-signout').classList.toggle('hidden', !signedIn);
+  const u = document.getElementById('nav-user');
+  u.classList.toggle('hidden', !signedIn); u.classList.toggle('flex', signedIn);
+  document.getElementById('m-account-label').textContent = signedIn ? 'Sign out' : 'Sign in';
 }
 
 async function onSession(s) {
@@ -323,64 +300,40 @@ async function onSession(s) {
   await loadLibrary();
   const onAuthView = !document.getElementById('view-auth').classList.contains('hidden');
   const onAddView = !document.getElementById('view-add').classList.contains('hidden');
-  if (s && onAuthView) {
-    switchTab('library');
-  } else if (!s && (onAuthView || (onAddView && wasSignedIn))) {
-    switchTab('library');
-  }
+  if (s && onAuthView) switchTab('library');
+  else if (!s && (onAuthView || (onAddView && wasSignedIn))) switchTab('library');
 }
 
 // ---------- shared library data via Supabase ----------
-let files = [];
+let files = [], loading = true, typeFilter = 'All';
 let shelf = [];
 try { shelf = JSON.parse(localStorage.getItem('ns_shelf') || '[]'); if (!Array.isArray(shelf)) shelf = []; } catch { shelf = []; }
 function saveShelf() {
-  try {
-    localStorage.setItem('ns_shelf', JSON.stringify(shelf));
-    return true;
-  } catch (err) {
-    console.error(err);
-    return false;
-  }
+  try { localStorage.setItem('ns_shelf', JSON.stringify(shelf)); return true; }
+  catch (err) { console.error(err); return false; }
 }
 
 function mapRow(r) {
   return {
-    id: r.id,
-    userId: r.user_id,
-    title: r.title,
-    code: r.code || '',
-    author: r.author || '',
-    type: r.type,
-    level: r.level,
-    faculty: r.faculty || '',
-    summary: r.summary || '',
-    fileName: r.file_name,
-    storagePath: r.storage_path,
-    mimeType: r.mime_type || 'application/octet-stream',
-    size: Number(r.size || 0),
-    added: Number(r.added || 0)
+    id: r.id, userId: r.user_id, title: r.title, code: r.code || '', author: r.author || '',
+    type: r.type, level: r.level, faculty: r.faculty || '', summary: r.summary || '',
+    fileName: r.file_name, storagePath: r.storage_path,
+    mimeType: r.mime_type || 'application/octet-stream', size: Number(r.size || 0), added: Number(r.added || 0)
   };
 }
 
 async function loadLibrary() {
-  if (!sb) { render(); return; }
+  if (!sb) { loading = false; render(); return; }
   try {
-    const { data, error } = await sb
-      .from(TABLE)
-      .select('*')
-      .order('added', { ascending: false });
-    if (error) {
-      console.error(error);
-      toast('Could not load shared library files.');
-      return;
-    }
+    const { data, error } = await sb.from(TABLE).select('*').order('added', { ascending: false });
+    if (error) { console.error(error); toast('Could not load shared library files.'); return; }
     files = (data || []).map(mapRow);
-    render();
-    if (!document.getElementById('view-shelf').classList.contains('hidden')) renderShelf();
   } catch (err) {
     console.error(err);
     toast('Network error while loading the library.');
+  } finally {
+    loading = false; render();
+    if (!document.getElementById('view-shelf').classList.contains('hidden')) renderShelf();
   }
 }
 
@@ -398,62 +351,100 @@ function switchTab(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
   if (name !== 'add') resetForm();
   document.getElementById('view-' + name).classList.remove('hidden');
-  document.querySelectorAll('.nav-tab').forEach(b => {
-    b.className = 'nav-tab font-saira px-3 py-2 rounded-lg text-sm ' + (b.dataset.tab === name ? 'bg-nile-50 text-nile-700' : 'text-slate-600 hover:bg-slate-50');
+  document.querySelectorAll('[data-tab]').forEach(b => {
+    if (b.dataset.tab === name) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
   if (name === 'shelf') renderShelf();
   window.scrollTo({ top: 0 });
 }
 
 // ---------- rendering ----------
+const TYPE_STYLE = {
+  'Lecture Notes': { bar: 'bg-nile-600', tag: 'bg-nile-50 text-nile-800' },
+  'Textbook': { bar: 'bg-violet-600', tag: 'bg-violet-50 text-violet-800' },
+  'Past Questions': { bar: 'bg-gold-500', tag: 'bg-gold-50 text-gold-700' },
+  'Lab Manual': { bar: 'bg-emerald-600', tag: 'bg-emerald-50 text-emerald-800' },
+  'Other': { bar: 'bg-slate-400', tag: 'bg-slate-100 text-slate-700' }
+};
+function extInfo(name) {
+  const e = (String(name).split('.').pop() || '').toLowerCase();
+  const c = /^pdf$/.test(e) ? 'bg-red-100 text-red-700'
+    : /^docx?$/.test(e) ? 'bg-blue-100 text-blue-700'
+    : /^pptx?$/.test(e) ? 'bg-orange-100 text-orange-700'
+    : /^xlsx?$/.test(e) ? 'bg-emerald-100 text-emerald-700'
+    : /^(jpe?g|png)$/.test(e) ? 'bg-purple-100 text-purple-700'
+    : 'bg-slate-100 text-slate-700';
+  return { label: e.slice(0, 4).toUpperCase() || 'FILE', cls: c };
+}
+
 function cardHTML(f) {
   const saved = shelf.includes(f.id);
   const isOwner = Boolean(session && session.user && f.userId === session.user.id);
-  const ownerButtons = isOwner ? `
-        <button onclick="editFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Edit details</button>
-        <button onclick="removeFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-700 text-slate-500 text-xs">Delete</button>
-  ` : '';
+  const ts = TYPE_STYLE[f.type] || TYPE_STYLE.Other, ex = extInfo(f.fileName);
+  const ownerLinks = isOwner ? `
+      <div class="flex gap-4 mt-3 text-sm">
+        <button onclick="editFile(${arg(f.id)})" class="text-slate-600 hover:text-nile-700 underline-offset-2 hover:underline">Edit details</button>
+        <button onclick="removeFile(${arg(f.id)})" class="text-slate-600 hover:text-rose-700 underline-offset-2 hover:underline">Delete</button>
+      </div>` : '';
   return `
-  <article class="bg-white rounded-2xl border border-slate-200 hover:border-nile-300 transition flex flex-col overflow-hidden">
-    <div class="h-1.5 bg-nile-700"></div>
+  <article class="card bg-white rounded-2xl border border-slate-200 flex flex-col overflow-hidden transition hover:-translate-y-0.5 hover:shadow-md">
+    <div class="h-1.5 ${ts.bar}"></div>
     <div class="p-5 flex-1 flex flex-col">
-      <div class="flex items-start justify-between gap-2 mb-3">
-        <div class="flex flex-wrap items-center gap-1.5">
-          ${f.code ? `<span class="font-display text-xs px-2.5 py-1 rounded-md bg-nile-900 text-white">${esc(f.code)}</span>` : ''}
-          <span class="font-saira text-[11px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">${esc(f.level)}</span>
-          <span class="font-saira text-[11px] px-2 py-0.5 rounded-md bg-nile-50 text-nile-700">${esc(f.type)}</span>
+      <div class="flex items-start gap-3 mb-3">
+        <div class="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center text-xs font-bold ${ex.cls}" aria-hidden="true">${esc(ex.label)}</div>
+        <div class="flex-1 min-w-0 flex flex-wrap items-center gap-1.5 pt-1">
+          ${f.code ? `<span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-nile-900 text-white">${esc(f.code)}</span>` : ''}
+          <span class="text-xs font-medium px-2 py-0.5 rounded-md bg-slate-100 text-slate-700">${esc(f.level)}</span>
+          <span class="text-xs font-medium px-2 py-0.5 rounded-md ${ts.tag}">${esc(f.type)}</span>
         </div>
-        <button onclick="toggleBookmark(${arg(f.id)})" title="${saved ? 'Remove from shelf' : 'Save to shelf'}" class="p-1.5 rounded-lg ${saved ? 'text-nile-700 bg-nile-50' : 'text-slate-400 hover:text-nile-700 hover:bg-slate-50'}">
-          <svg class="w-5 h-5" fill="${saved ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+        <button onclick="toggleBookmark(${arg(f.id)})" aria-label="${saved ? 'Remove from shelf' : 'Save to shelf'}" aria-pressed="${saved}" class="p-1.5 rounded-lg ${saved ? 'text-gold-700 bg-gold-50' : 'text-slate-500 hover:text-nile-700 hover:bg-slate-100'}">
+          <svg class="w-5 h-5" fill="${saved ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
         </button>
       </div>
-      <h3 class="font-serif font-bold text-lg text-slate-900 leading-snug mb-1">${esc(f.title)}</h3>
-      <p class="text-xs text-slate-500 mb-3">${[f.author, f.faculty].filter(Boolean).map(esc).join(' • ') || 'No author listed'}</p>
+      <h3 class="font-bold text-lg text-slate-900 leading-snug mb-1">${esc(f.title)}</h3>
+      <p class="text-sm text-slate-600 mb-3">${[f.author, f.faculty].filter(Boolean).map(esc).join(' • ') || 'No author listed'}</p>
       ${f.summary ? `<p class="text-sm text-slate-600 leading-relaxed line-clamp-3 mb-3">${esc(f.summary)}</p>` : ''}
-      <div class="mt-auto pt-3 border-t border-slate-100 text-xs text-slate-500 mb-3 truncate" title="${esc(f.fileName)}">${esc(f.fileName)} • ${fmtSize(f.size)}</div>
+      <div class="mt-auto pt-3 border-t border-slate-100 text-sm text-slate-600 mb-3 truncate" title="${esc(f.fileName)}">${esc(f.fileName)} • ${fmtSize(f.size)}</div>
       <div class="grid grid-cols-2 gap-2">
-        <button onclick="openFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-xs">Open</button>
-        <button onclick="downloadFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Download</button>
-        ${ownerButtons}
-      </div>
+        <button onclick="openFile(${arg(f.id)})" class="px-3 py-2 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-sm font-semibold">Open</button>
+        <button onclick="downloadFile(${arg(f.id)})" class="px-3 py-2 rounded-xl border border-slate-300 hover:bg-nile-50 text-slate-700 text-sm font-semibold">Download</button>
+      </div>${ownerLinks}
     </div>
   </article>`;
 }
 
+const skeleton = () => `<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-pulse" aria-hidden="true">
+  <div class="h-1.5 bg-slate-200"></div><div class="p-5 space-y-3">
+  <div class="flex gap-3"><div class="w-11 h-11 rounded-xl bg-slate-200"></div><div class="flex-1 pt-2 space-y-2"><div class="h-3 w-1/2 rounded bg-slate-200"></div></div></div>
+  <div class="h-5 w-3/4 rounded bg-slate-200"></div><div class="h-3 w-1/2 rounded bg-slate-100"></div>
+  <div class="h-3 rounded bg-slate-100"></div><div class="h-3 w-5/6 rounded bg-slate-100"></div>
+  <div class="grid grid-cols-2 gap-2 pt-3"><div class="h-9 rounded-xl bg-slate-200"></div><div class="h-9 rounded-xl bg-slate-100"></div></div></div></div>`;
+
+function setType(t) { typeFilter = t; render(); }
+function renderChips() {
+  document.getElementById('chips').innerHTML = ['All', 'Lecture Notes', 'Textbook', 'Past Questions', 'Lab Manual', 'Other'].map(t => {
+    const on = t === typeFilter;
+    return `<button onclick='setType(${arg(t)})' aria-pressed="${on}" class="px-3.5 py-1.5 rounded-full text-sm font-medium border transition ${on ? 'bg-nile-700 border-nile-700 text-white' : 'bg-white border-slate-300 text-slate-700 hover:border-nile-600 hover:text-nile-700'}">${t === 'All' ? 'All types' : t}</button>`;
+  }).join('');
+}
+
 function render() {
+  renderChips();
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const type = document.getElementById('f-type').value;
   const level = document.getElementById('f-level').value;
   const sort = document.getElementById('f-sort').value;
+  const grid = document.getElementById('grid'), empty = document.getElementById('empty');
+  const courses = new Set(files.map(f => f.code.trim()).filter(Boolean)).size;
+  document.getElementById('stats').textContent = loading ? '' : `${files.length} ${files.length === 1 ? 'file' : 'files'} • ${courses} ${courses === 1 ? 'course' : 'courses'}`;
+  if (loading) { grid.innerHTML = skeleton().repeat(6); empty.classList.add('hidden'); return; }
   let list = files.filter(f =>
-    (type === 'All' || f.type === type) &&
+    (typeFilter === 'All' || f.type === typeFilter) &&
     (level === 'All' || f.level === level) &&
     (!q || [f.title, f.code, f.author, f.faculty, f.summary, f.fileName].some(x => String(x || '').toLowerCase().includes(q)))
   );
   list.sort((a, b) => sort === 'title' ? a.title.localeCompare(b.title)
     : sort === 'code' ? (a.code || '~').localeCompare(b.code || '~')
     : b.added - a.added);
-  const grid = document.getElementById('grid'), empty = document.getElementById('empty');
   grid.innerHTML = list.map(cardHTML).join('');
   empty.classList.toggle('hidden', list.length > 0);
   if (!list.length) {
@@ -490,8 +481,7 @@ function openFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
   const url = getFileUrl(f);
   if (!url) return toast('File link is unavailable.');
-  const viewable = /^(application\/pdf|image\/|text\/)/.test(f.mimeType);
-  if (!viewable) {
+  if (!/^(application\/pdf|image\/|text\/)/.test(f.mimeType)) {
     toast('This file type can’t be previewed in browser. Downloading it instead.');
     return downloadFile(id);
   }
@@ -505,14 +495,10 @@ async function downloadFile(id) {
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error('Download failed');
-    const blob = await res.blob();
-    const blobUrl = URL.createObjectURL(blob);
+    const blobUrl = URL.createObjectURL(await res.blob());
     const a = document.createElement('a');
-    a.href = blobUrl;
-    a.download = f.fileName;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    a.href = blobUrl; a.download = f.fileName;
+    document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
   } catch (err) {
     console.error(err);
@@ -522,9 +508,7 @@ async function downloadFile(id) {
 
 async function removeFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
-  if (!session || !session.user || f.userId !== session.user.id) {
-    return toast('Only the original uploader can delete this file.');
-  }
+  if (!session || !session.user || f.userId !== session.user.id) return toast('Only the original uploader can delete this file.');
   if (!confirm(`Delete "${f.title}"? This can’t be undone.`)) return;
   try {
     if (f.storagePath) {
@@ -567,16 +551,11 @@ function newFile() {
   switchTab('add');
 }
 
-function cancelEdit() {
-  const back = editingId ? editFrom : 'library';
-  switchTab(back);
-}
+function cancelEdit() { switchTab(editingId ? editFrom : 'library'); }
 
 function editFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
-  if (!session || !session.user || f.userId !== session.user.id) {
-    return toast('Only the original uploader can edit this file.');
-  }
+  if (!session || !session.user || f.userId !== session.user.id) return toast('Only the original uploader can edit this file.');
   editFrom = document.getElementById('view-shelf').classList.contains('hidden') ? 'library' : 'shelf';
   switchTab('add');
   editingId = id;
@@ -599,18 +578,13 @@ function editFile(id) {
 
 async function handleAdd(e) {
   e.preventDefault();
-  if (!session || !session.user) {
-    toast('Please sign in first.');
-    return switchTab('auth');
-  }
+  if (!session || !session.user) { toast('Please sign in first.'); return switchTab('auth'); }
   if (!sb) return toast(setupMsg());
 
   const file = document.getElementById('a-file').files[0];
   const old = editingId ? files.find(x => x.id === editingId) : null;
   if (!file && !old) return toast('Choose a file to add.');
-  if (old && old.userId !== session.user.id) {
-    return toast('Only the original uploader can edit this file.');
-  }
+  if (old && old.userId !== session.user.id) return toast('Only the original uploader can edit this file.');
 
   const btn = document.getElementById('a-submit'), label = btn.textContent;
   btn.disabled = true; btn.textContent = 'Uploading…';
@@ -622,16 +596,12 @@ async function handleAdd(e) {
   try {
     if (file) {
       const newPath = `${session.user.id}/${id}-${safeFileName(file.name)}`;
-      const { error: upErr } = await sb.storage
-        .from(BUCKET)
+      const { error: upErr } = await sb.storage.from(BUCKET)
         .upload(newPath, file, { contentType: file.type || 'application/octet-stream', upsert: true });
       if (upErr) throw upErr;
-      if (old && old.storagePath && old.storagePath !== newPath) {
-        await sb.storage.from(BUCKET).remove([old.storagePath]);
-      }
+      if (old && old.storagePath && old.storagePath !== newPath) await sb.storage.from(BUCKET).remove([old.storagePath]);
       storagePath = newPath;
     }
-
     const row = {
       id,
       user_id: old ? old.userId : session.user.id,
@@ -648,14 +618,8 @@ async function handleAdd(e) {
       size: file ? file.size : old.size,
       added: old ? old.added : Date.now()
     };
-
-    const { data, error: dbErr } = await sb
-      .from(TABLE)
-      .upsert(row)
-      .select()
-      .single();
+    const { data, error: dbErr } = await sb.from(TABLE).upsert(row).select().single();
     if (dbErr) throw dbErr;
-
     const rec = mapRow(data);
     if (old) files = files.map(x => x.id === rec.id ? rec : x); else files.unshift(rec);
     render(); renderShelf();
@@ -675,18 +639,11 @@ async function handleAdd(e) {
   updateAuthUI();
   switchTab('library');
   render();
-  if (!sb) {
-    toast(setupMsg());
-    return;
-  }
+  if (!sb) { loading = false; render(); toast(setupMsg()); return; }
   sb.auth.onAuthStateChange((_event, s) => { void onSession(s); });
   try {
     const { data, error } = await sb.auth.getSession();
-    if (error) {
-      console.error(error);
-      await loadLibrary();
-      return;
-    }
+    if (error) { console.error(error); await loadLibrary(); return; }
     await onSession(data.session);
   } catch (err) {
     console.error(err);

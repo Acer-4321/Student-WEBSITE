@@ -32,11 +32,12 @@ tailwind.config = { theme: { extend: {
       </div>
       <span class="font-display text-xl text-nile-900">Nile<span class="text-nile-600">Scholar</span></span>
     </button>
-    <nav id="main-nav" class="hidden flex flex-wrap items-center justify-end gap-1">
+    <nav id="main-nav" class="flex flex-wrap items-center justify-end gap-1">
       <button data-tab="library" onclick="switchTab('library')" class="nav-tab font-saira px-3 py-2 rounded-lg text-sm">Library</button>
       <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab font-saira px-3 py-2 rounded-lg text-sm">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-[11px] rounded-full bg-nile-100 text-nile-800">0</span></button>
-      <button data-tab="add" onclick="newFile()" class="font-saira px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
-      <button onclick="handleSignOut()" class="font-saira px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">Sign out</button>
+      <button id="nav-add" data-tab="add" onclick="newFile()" class="font-saira px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
+      <button id="nav-signin" data-tab="auth" onclick="switchTab('auth')" class="font-saira px-3 py-2 rounded-lg text-sm text-nile-700 hover:bg-nile-50">Sign in</button>
+      <button id="nav-signout" onclick="handleSignOut()" class="hidden font-saira px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">Sign out</button>
     </nav>
   </div>
 </header>
@@ -47,7 +48,7 @@ tailwind.config = { theme: { extend: {
   <section id="view-library" class="view hidden">
     <div class="mb-6">
       <h1 class="font-serif text-3xl font-bold text-nile-900">Your library</h1>
-      <p class="font-hand text-sm text-slate-600 mt-2">Lecture notes, textbooks and past questions you've added. Files stay in this browser.</p>
+      <p class="font-hand text-sm text-slate-600 mt-2">Shared lecture notes, textbooks and past questions. Anyone can browse; sign in to upload and manage your own files.</p>
     </div>
     <div class="flex flex-wrap gap-2.5 mb-6">
       <input id="search" oninput="render()" type="search" placeholder="Search title, course code or author" class="flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-nile-600" />
@@ -66,7 +67,7 @@ tailwind.config = { theme: { extend: {
     <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     <div id="empty" class="hidden text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300">
       <h3 id="empty-title" class="font-serif text-xl font-bold text-slate-800 mb-2">No files yet</h3>
-      <p id="empty-text" class="text-sm text-slate-500 max-w-md mx-auto mb-5">Add your first lecture note or textbook to start building your library.</p>
+      <p id="empty-text" class="text-sm text-slate-500 max-w-md mx-auto mb-5">Add the first lecture note or textbook to start building the shared library.</p>
       <button onclick="newFile()" class="font-saira px-5 py-2.5 rounded-xl bg-nile-700 text-white text-sm hover:bg-nile-800">Add a file</button>
     </div>
   </section>
@@ -84,11 +85,11 @@ tailwind.config = { theme: { extend: {
     </div>
   </section>
 
-  <!-- ADD -->
+  <!-- ADD / EDIT -->
   <section id="view-add" class="view hidden">
     <div class="max-w-2xl mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
       <h1 id="add-heading" class="font-serif text-3xl font-bold text-nile-900">Add a file</h1>
-      <p id="add-sub" class="font-hand text-sm text-slate-600 mt-2 mb-6">Upload a lecture note, textbook or past question pack.</p>
+      <p id="add-sub" class="font-hand text-sm text-slate-600 mt-2 mb-6">Upload a lecture note, textbook or past question pack to the shared library.</p>
       <form id="add-form" onsubmit="handleAdd(event)" class="space-y-4">
         <div>
           <label id="a-file-label" class="block text-xs font-semibold text-slate-700 mb-1.5">File *</label>
@@ -140,10 +141,10 @@ tailwind.config = { theme: { extend: {
   </section>
 
   <!-- AUTH -->
-  <section id="view-auth" class="view">
+  <section id="view-auth" class="view hidden">
     <div class="max-w-md mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
       <h1 id="auth-heading" class="font-serif text-3xl font-bold text-nile-900">Sign in</h1>
-      <p id="auth-sub" class="font-hand text-sm text-slate-600 mt-2 mb-5">NileScholar is for Nile University students. Use your school email.</p>
+      <p id="auth-sub" class="font-hand text-sm text-slate-600 mt-2 mb-5">Sign in with your Nile University email to upload files and manage your own uploads.</p>
       <div class="grid grid-cols-2 gap-1 p-1 mb-5 rounded-xl bg-slate-100">
         <button id="tab-signin" type="button" onclick="setAuthMode('signin')" class="font-saira px-3 py-2 rounded-lg text-sm">Sign in</button>
         <button id="tab-signup" type="button" onclick="setAuthMode('signup')" class="font-saira px-3 py-2 rounded-lg text-sm">Create account</button>
@@ -175,6 +176,7 @@ tailwind.config = { theme: { extend: {
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arg = v => esc(JSON.stringify(String(v)));
 function fmtSize(b) { return b >= 1048576 ? (b/1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b/1024)) + ' KB'; }
+function safeFileName(name) { return String(name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_'); }
 let toastTimer;
 function toast(msg) {
   const t = document.getElementById('toast');
@@ -183,8 +185,10 @@ function toast(msg) {
 }
 
 // ---------- Supabase config (FILL THESE IN) ----------
-const SUPABASE_URL = 'https://YOUR-PROJECT-ID.supabase.co';
-const SUPABASE_KEY = 'YOUR-PUBLISHABLE-OR-ANON-KEY';
+const SUPABASE_URL = 'https://eoxymnmhngranbwjlees.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_JeJMsbII_OYP-w9D81CGOQ_nadZ3x1i';
+const BUCKET = 'study-files';
+const TABLE = 'library_files';
 const NILE_EMAIL = /^[^\s@]+@nileuniversity\.edu\.ng$/i;
 const configured = !SUPABASE_URL.includes('YOUR-PROJECT') && !SUPABASE_KEY.includes('YOUR-PUBLISHABLE');
 const sb = configured && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -201,7 +205,7 @@ function setAuthMode(mode) {
   document.getElementById('auth-heading').textContent = up ? 'Create account' : 'Sign in';
   document.getElementById('auth-sub').textContent = up
     ? 'Use your Nile University email. We’ll send a link to confirm it’s really yours.'
-    : 'NileScholar is for Nile University students. Use your school email.';
+    : 'Sign in with your Nile University email to upload files and manage your own uploads.';
   document.getElementById('confirm-wrap').classList.toggle('hidden', !up);
   document.getElementById('l-confirm').required = up;
   document.getElementById('l-pass').autocomplete = up ? 'new-password' : 'current-password';
@@ -215,7 +219,22 @@ function showAuthMsg(text) {
   m.textContent = text; m.classList.toggle('hidden', !text);
   if (text) m.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
-async function handleSignOut() { await sb.auth.signOut(); toast('Signed out'); }
+
+async function handleSignOut() {
+  if (!sb) return toast('Supabase is not configured yet.');
+  try {
+    const { error } = await sb.auth.signOut();
+    if (error) {
+      console.error(error);
+      toast('Could not sign out. Try again.');
+      return;
+    }
+    toast('Signed out');
+  } catch (err) {
+    console.error(err);
+    toast('Could not sign out. Check your connection and try again.');
+  }
+}
 
 async function handleAuth(e) {
   e.preventDefault();
@@ -223,12 +242,14 @@ async function handleAuth(e) {
   const email = document.getElementById('l-email').value.trim().toLowerCase();
   const password = document.getElementById('l-pass').value;
   if (!NILE_EMAIL.test(email)) return showAuthMsg('Please use your Nile University email, like yourname@nileuniversity.edu.ng.');
+  if (authMode === 'signup') {
+    if (password.length < 8) return showAuthMsg('Choose a password with at least 8 characters.');
+    if (password !== document.getElementById('l-confirm').value) return showAuthMsg('The two passwords don’t match.');
+  }
   const btn = document.getElementById('auth-submit'), label = btn.textContent;
   btn.disabled = true; btn.textContent = 'Please wait…';
   try {
     if (authMode === 'signup') {
-      if (password.length < 8) return showAuthMsg('Choose a password with at least 8 characters.');
-      if (password !== document.getElementById('l-confirm').value) return showAuthMsg('The two passwords don’t match.');
       const options = location.protocol.startsWith('http') ? { emailRedirectTo: location.origin + location.pathname } : {};
       const { data, error } = await sb.auth.signUp({ email, password, options });
       if (error) return showAuthMsg(error.message);
@@ -249,39 +270,91 @@ async function handleAuth(e) {
   }
 }
 
-function onSession(s) {
+function updateAuthUI() {
+  const signedIn = Boolean(session && session.user);
+  document.getElementById('nav-signin').classList.toggle('hidden', signedIn);
+  document.getElementById('nav-signout').classList.toggle('hidden', !signedIn);
+}
+
+async function onSession(s) {
+  const wasSignedIn = Boolean(session && session.user);
   session = s;
-  document.getElementById('main-nav').classList.toggle('hidden', !s);
-  switchTab(s ? 'library' : 'auth');
+  updateAuthUI();
+  await loadLibrary();
+  const onAuthView = !document.getElementById('view-auth').classList.contains('hidden');
+  const onAddView = !document.getElementById('view-add').classList.contains('hidden');
+  if (s && onAuthView) {
+    switchTab('library');
+  } else if (!s && (onAuthView || (onAddView && wasSignedIn))) {
+    switchTab('library');
+  }
 }
 
-// ---------- storage: files in IndexedDB, bookmarks in localStorage ----------
-let db;
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open('nilescholar', 1);
-    req.onupgradeneeded = () => req.result.createObjectStore('files', { keyPath: 'id' });
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
-  });
-}
-const tx = (mode, fn) => new Promise((resolve, reject) => {
-  const t = db.transaction('files', mode), s = t.objectStore('files'), r = fn(s);
-  t.oncomplete = () => resolve(r && r.result);
-  t.onerror = () => reject(t.error);
-});
-const getAll = () => tx('readonly', s => s.getAll());
-const putFile = rec => tx('readwrite', s => s.put(rec));
-const delFile = id => tx('readwrite', s => s.delete(id));
-
+// ---------- shared library data via Supabase ----------
 let files = [];
 let shelf = [];
 try { shelf = JSON.parse(localStorage.getItem('ns_shelf') || '[]'); if (!Array.isArray(shelf)) shelf = []; } catch { shelf = []; }
-function saveShelf() { try { localStorage.setItem('ns_shelf', JSON.stringify(shelf)); } catch {} }
+function saveShelf() {
+  try {
+    localStorage.setItem('ns_shelf', JSON.stringify(shelf));
+    return true;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+
+function mapRow(r) {
+  return {
+    id: r.id,
+    userId: r.user_id,
+    title: r.title,
+    code: r.code || '',
+    author: r.author || '',
+    type: r.type,
+    level: r.level,
+    faculty: r.faculty || '',
+    summary: r.summary || '',
+    fileName: r.file_name,
+    storagePath: r.storage_path,
+    mimeType: r.mime_type || 'application/octet-stream',
+    size: Number(r.size || 0),
+    added: Number(r.added || 0)
+  };
+}
+
+async function loadLibrary() {
+  if (!sb) { render(); return; }
+  try {
+    const { data, error } = await sb
+      .from(TABLE)
+      .select('*')
+      .order('added', { ascending: false });
+    if (error) {
+      console.error(error);
+      toast('Could not load shared library files.');
+      return;
+    }
+    files = (data || []).map(mapRow);
+    render();
+    if (!document.getElementById('view-shelf').classList.contains('hidden')) renderShelf();
+  } catch (err) {
+    console.error(err);
+    toast('Network error while loading the library.');
+  }
+}
+
+function getFileUrl(f) {
+  if (!sb || !f.storagePath) return '';
+  return sb.storage.from(BUCKET).getPublicUrl(f.storagePath).data.publicUrl;
+}
 
 // ---------- navigation ----------
 function switchTab(name) {
-  if (!session) name = 'auth';
+  if (name === 'add' && !session) {
+    toast('Sign in with your Nile University email to upload files.');
+    name = 'auth';
+  }
   document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
   if (name !== 'add') resetForm();
   document.getElementById('view-' + name).classList.remove('hidden');
@@ -295,6 +368,11 @@ function switchTab(name) {
 // ---------- rendering ----------
 function cardHTML(f) {
   const saved = shelf.includes(f.id);
+  const isOwner = Boolean(session && session.user && f.userId === session.user.id);
+  const ownerButtons = isOwner ? `
+        <button onclick="editFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Edit details</button>
+        <button onclick="removeFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-700 text-slate-500 text-xs">Delete</button>
+  ` : '';
   return `
   <article class="bg-white rounded-2xl border border-slate-200 hover:border-nile-300 transition flex flex-col overflow-hidden">
     <div class="h-1.5 bg-nile-700"></div>
@@ -316,8 +394,7 @@ function cardHTML(f) {
       <div class="grid grid-cols-2 gap-2">
         <button onclick="openFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl bg-nile-700 hover:bg-nile-800 text-white text-xs">Open</button>
         <button onclick="downloadFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Download</button>
-        <button onclick="editFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-nile-50 text-slate-700 text-xs">Edit details</button>
-        <button onclick="removeFile(${arg(f.id)})" class="font-saira px-3 py-2 rounded-xl border border-slate-200 hover:bg-rose-50 hover:text-rose-700 text-slate-500 text-xs">Delete</button>
+        ${ownerButtons}
       </div>
     </div>
   </article>`;
@@ -343,7 +420,7 @@ function render() {
     const none = files.length === 0;
     document.getElementById('empty-title').textContent = none ? 'No files yet' : 'No matching files';
     document.getElementById('empty-text').textContent = none
-      ? 'Add your first lecture note or textbook to start building your library.'
+      ? 'Add the first lecture note or textbook to start building the shared library.'
       : 'Try a different search or clear a filter.';
   }
   document.getElementById('shelf-count').textContent = shelf.filter(id => files.some(f => f.id === id)).length;
@@ -359,39 +436,73 @@ function renderShelf() {
 function toggleBookmark(id) {
   const i = shelf.indexOf(id);
   if (i > -1) shelf.splice(i, 1); else shelf.push(id);
-  saveShelf(); render();
+  if (!saveShelf()) {
+    if (i > -1) shelf.splice(i, 0, id); else shelf.pop();
+    toast('Could not update the shelf. Browser storage may be blocked or full.');
+    return;
+  }
+  render();
   if (!document.getElementById('view-shelf').classList.contains('hidden')) renderShelf();
   toast(i > -1 ? 'Removed from shelf' : 'Saved to shelf');
 }
 
 function openFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
-  const viewable = /^(application\/pdf|image\/|text\/)/.test(f.blob.type);
-  if (!viewable) { toast('This file type can’t be previewed. Downloading it instead.'); return downloadFile(id); }
-  const url = URL.createObjectURL(f.blob);
+  const url = getFileUrl(f);
+  if (!url) return toast('File link is unavailable.');
+  const viewable = /^(application\/pdf|image\/|text\/)/.test(f.mimeType);
+  if (!viewable) {
+    toast('This file type can’t be previewed in browser. Downloading it instead.');
+    return downloadFile(id);
+  }
   window.open(url, '_blank', 'noopener');
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
-function downloadFile(id) {
+async function downloadFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
-  const url = URL.createObjectURL(f.blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = f.fileName;
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const url = getFileUrl(f);
+  if (!url) return toast('File link is unavailable.');
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Download failed');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = f.fileName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+  } catch (err) {
+    console.error(err);
+    window.open(url, '_blank', 'noopener');
+  }
 }
 
 async function removeFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
+  if (!session || !session.user || f.userId !== session.user.id) {
+    return toast('Only the original uploader can delete this file.');
+  }
   if (!confirm(`Delete "${f.title}"? This can’t be undone.`)) return;
   try {
-    await delFile(id);
+    if (f.storagePath) {
+      const { error: stErr } = await sb.storage.from(BUCKET).remove([f.storagePath]);
+      if (stErr) throw stErr;
+    }
+    const { error: dbErr } = await sb.from(TABLE).delete().eq('id', id);
+    if (dbErr) throw dbErr;
     files = files.filter(x => x.id !== id);
-    shelf = shelf.filter(x => x !== id); saveShelf();
+    const shelfChanged = shelf.includes(id);
+    shelf = shelf.filter(x => x !== id);
+    const shelfSaved = !shelfChanged || saveShelf();
     render(); renderShelf();
-    toast('File deleted');
-  } catch { toast('Could not delete the file. Try again.'); }
+    toast(shelfSaved ? 'File deleted' : 'File deleted, but shelf changes could not be saved.');
+  } catch (err) {
+    console.error(err);
+    toast('Could not delete the file. Try again.');
+  }
 }
 
 let editingId = null, editFrom = 'library';
@@ -400,14 +511,21 @@ function resetForm() {
   editingId = null;
   document.getElementById('add-form').reset();
   document.getElementById('add-heading').textContent = 'Add a file';
-  document.getElementById('add-sub').textContent = 'Upload a lecture note, textbook or past question pack.';
+  document.getElementById('add-sub').textContent = 'Upload a lecture note, textbook or past question pack to the shared library.';
   document.getElementById('a-file-label').textContent = 'File *';
   document.getElementById('a-file').required = true;
   document.getElementById('a-file-note').classList.add('hidden');
   document.getElementById('a-submit').textContent = 'Save to library';
 }
 
-function newFile() { resetForm(); switchTab('add'); }
+function newFile() {
+  if (!session || !session.user) {
+    toast('Sign in with your Nile University email to upload files.');
+    return switchTab('auth');
+  }
+  resetForm();
+  switchTab('add');
+}
 
 function cancelEdit() {
   const back = editingId ? editFrom : 'library';
@@ -416,6 +534,9 @@ function cancelEdit() {
 
 function editFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
+  if (!session || !session.user || f.userId !== session.user.id) {
+    return toast('Only the original uploader can edit this file.');
+  }
   editFrom = document.getElementById('view-shelf').classList.contains('hidden') ? 'library' : 'shelf';
   switchTab('add');
   editingId = id;
@@ -427,7 +548,7 @@ function editFile(id) {
   document.getElementById('a-faculty').value = f.faculty || '';
   document.getElementById('a-summary').value = f.summary || '';
   document.getElementById('add-heading').textContent = 'Edit details';
-  document.getElementById('add-sub').textContent = 'Fix any mistakes below. Your file stays as it is unless you choose a new one.';
+  document.getElementById('add-sub').textContent = 'Update your upload details. Your file stays as it is unless you choose a new one.';
   document.getElementById('a-file-label').textContent = 'Replace file (optional)';
   const note = document.getElementById('a-file-note');
   note.textContent = `Current file: ${f.fileName} (${fmtSize(f.size)})`;
@@ -438,54 +559,99 @@ function editFile(id) {
 
 async function handleAdd(e) {
   e.preventDefault();
+  if (!session || !session.user) {
+    toast('Please sign in first.');
+    return switchTab('auth');
+  }
+  if (!sb) return toast(setupMsg());
+
   const file = document.getElementById('a-file').files[0];
   const old = editingId ? files.find(x => x.id === editingId) : null;
   if (!file && !old) return toast('Choose a file to add.');
-  const rec = {
-    ...(old || {}),
-    id: old ? old.id : 'f-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-    title: document.getElementById('a-title').value.trim(),
-    code: document.getElementById('a-code').value.trim().toUpperCase(),
-    author: document.getElementById('a-author').value.trim(),
-    type: document.getElementById('a-type').value,
-    level: document.getElementById('a-level').value,
-    faculty: document.getElementById('a-faculty').value.trim(),
-    summary: document.getElementById('a-summary').value.trim(),
-    fileName: file ? file.name : old.fileName,
-    size: file ? file.size : old.size,
-    added: old ? old.added : Date.now(),
-    blob: file || old.blob
-  };
+  if (old && old.userId !== session.user.id) {
+    return toast('Only the original uploader can edit this file.');
+  }
+
+  const btn = document.getElementById('a-submit'), label = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Uploading…';
+
+  const id = old ? old.id : 'f-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+  let storagePath = old ? old.storagePath : '';
   const back = old ? editFrom : 'library';
+
   try {
-    await putFile(rec);
-    if (old) files = files.map(x => x.id === rec.id ? rec : x); else files.push(rec);
+    if (file) {
+      const newPath = `${session.user.id}/${id}-${safeFileName(file.name)}`;
+      const { error: upErr } = await sb.storage
+        .from(BUCKET)
+        .upload(newPath, file, { contentType: file.type || 'application/octet-stream', upsert: true });
+      if (upErr) throw upErr;
+      if (old && old.storagePath && old.storagePath !== newPath) {
+        await sb.storage.from(BUCKET).remove([old.storagePath]);
+      }
+      storagePath = newPath;
+    }
+
+    const row = {
+      id,
+      user_id: old ? old.userId : session.user.id,
+      title: document.getElementById('a-title').value.trim(),
+      code: document.getElementById('a-code').value.trim().toUpperCase(),
+      author: document.getElementById('a-author').value.trim(),
+      type: document.getElementById('a-type').value,
+      level: document.getElementById('a-level').value,
+      faculty: document.getElementById('a-faculty').value.trim(),
+      summary: document.getElementById('a-summary').value.trim(),
+      file_name: file ? file.name : old.fileName,
+      storage_path: storagePath,
+      mime_type: file ? (file.type || 'application/octet-stream') : old.mimeType,
+      size: file ? file.size : old.size,
+      added: old ? old.added : Date.now()
+    };
+
+    const { data, error: dbErr } = await sb
+      .from(TABLE)
+      .upsert(row)
+      .select()
+      .single();
+    if (dbErr) throw dbErr;
+
+    const rec = mapRow(data);
+    if (old) files = files.map(x => x.id === rec.id ? rec : x); else files.unshift(rec);
     render(); renderShelf();
     switchTab(back);
-    toast(old ? 'Changes saved' : 'Saved to library');
+    toast(old ? 'Changes saved' : 'Published to shared library');
   } catch (err) {
     console.error(err);
-    toast('Could not save. Your browser storage may be full or blocked.');
+    toast('Could not save file. Check your storage bucket and policies.');
+  } finally {
+    btn.disabled = false; btn.textContent = label;
   }
 }
 
 // ---------- init ----------
 (async function init() {
   setAuthMode('signin');
-  switchTab('auth');
+  updateAuthUI();
+  switchTab('library');
+  render();
+  if (!sb) {
+    toast(setupMsg());
+    return;
+  }
+  sb.auth.onAuthStateChange((_event, s) => { void onSession(s); });
   try {
-    db = await openDB();
-    files = await getAll();
-    if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+    const { data, error } = await sb.auth.getSession();
+    if (error) {
+      console.error(error);
+      await loadLibrary();
+      return;
+    }
+    await onSession(data.session);
   } catch (err) {
     console.error(err);
-    toast('Storage is unavailable in this browser, so files can’t be saved.');
+    await loadLibrary();
   }
-  render();
-  if (!sb) { showAuthMsg(setupMsg()); return; }
-  sb.auth.onAuthStateChange((_event, s) => onSession(s));
-  const { data } = await sb.auth.getSession();
-  onSession(data.session);
 })();
 </script>
 </body>

@@ -16,7 +16,29 @@ tailwind.config = { theme: { extend: {
 }}};
 </script>
 <style>
-  body { font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; background:#F8FAFC; color:#1E293B; }
+  html { color-scheme:light; }
+  html[data-theme="dark"] { color-scheme:dark; }
+  body { font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; background:#F8FAFC; color:#1E293B; transition:background-color .2s ease,color .2s ease; }
+  html[data-theme="dark"] body { background:#0F172A !important; color:#E2E8F0 !important; }
+  html[data-theme="dark"] .bg-white, html[data-theme="dark"] .bg-white\/95 { background-color:#172554 !important; }
+  html[data-theme="dark"] .bg-slate-50 { background-color:#1E293B !important; }
+  html[data-theme="dark"] .bg-slate-100 { background-color:#334155 !important; }
+  html[data-theme="dark"] .bg-nile-50 { background-color:#1E3A5F !important; }
+  html[data-theme="dark"] .bg-nile-100 { background-color:#25466D !important; }
+  html[data-theme="dark"] .text-nile-900, html[data-theme="dark"] .text-slate-900, html[data-theme="dark"] .text-slate-800 { color:#F1F5F9 !important; }
+  html[data-theme="dark"] .text-nile-700, html[data-theme="dark"] .text-nile-800, html[data-theme="dark"] .text-nile-600 { color:#BFDBFE !important; }
+  html[data-theme="dark"] .text-slate-700, html[data-theme="dark"] .text-slate-600 { color:#CBD5E1 !important; }
+  html[data-theme="dark"] .text-slate-500, html[data-theme="dark"] .text-slate-400 { color:#94A3B8 !important; }
+  html[data-theme="dark"] .border-slate-100, html[data-theme="dark"] .border-slate-200, html[data-theme="dark"] .border-slate-300 { border-color:#334155 !important; }
+  html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] textarea { background-color:#0F172A !important; color:#E2E8F0 !important; border-color:#475569 !important; }
+  html[data-theme="dark"] input::placeholder, html[data-theme="dark"] textarea::placeholder { color:#64748B !important; }
+  html[data-theme="dark"] .hover\:bg-slate-50:hover { background-color:#334155 !important; }
+  html[data-theme="dark"] .hover\:bg-nile-50:hover { background-color:#1E3A5F !important; }
+  html[data-theme="dark"] .hover\:border-nile-300:hover { border-color:#60A5FA !important; }
+  html[data-theme="dark"] .bg-rose-50 { background-color:#4C1D2B !important; }
+  html[data-theme="dark"] .hover\:text-rose-700:hover { color:#FDA4AF !important; }
+  html[data-theme="dark"] #toast { background-color:#1E3A8A !important; }
+  html[data-theme="dark"] #tab-signin.bg-white, html[data-theme="dark"] #tab-signup.bg-white { background-color:#334155 !important; color:#DBEAFE !important; }
   .font-display, .font-hand { font-weight:400 !important; }
   .font-saira { font-weight:500; }
   .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
@@ -38,6 +60,7 @@ tailwind.config = { theme: { extend: {
       <button id="nav-add" data-tab="add" onclick="newFile()" class="font-saira px-3.5 py-2 rounded-lg text-sm bg-nile-700 text-white hover:bg-nile-800">Add file</button>
       <button id="nav-signin" data-tab="auth" onclick="switchTab('auth')" class="font-saira px-3 py-2 rounded-lg text-sm text-nile-700 hover:bg-nile-50">Sign in</button>
       <button id="nav-signout" onclick="handleSignOut()" class="hidden font-saira px-3 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-50">Sign out</button>
+      <button id="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to dark mode" aria-pressed="false" class="font-saira px-3 py-2 rounded-lg text-sm text-nile-700 hover:bg-nile-50 inline-flex items-center gap-1.5"><span id="theme-icon" aria-hidden="true">☾</span><span id="theme-label">Dark mode</span></button>
     </nav>
   </div>
 </header>
@@ -172,6 +195,23 @@ tailwind.config = { theme: { extend: {
 <div id="toast" class="fixed bottom-5 right-5 z-50 hidden bg-nile-900 text-white px-4 py-3 rounded-xl shadow-xl text-sm font-medium"></div>
 
 <script>
+// ---------- appearance ----------
+function applyTheme(theme) {
+  const dark = theme === 'dark';
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  const button = document.getElementById('theme-toggle');
+  document.getElementById('theme-icon').textContent = dark ? '☀' : '☾';
+  document.getElementById('theme-label').textContent = dark ? 'Light mode' : 'Dark mode';
+  button.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  button.setAttribute('aria-pressed', String(dark));
+}
+function toggleTheme() {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  try { localStorage.setItem('ns_theme', next); } catch {}
+  applyTheme(next);
+}
+try { applyTheme(localStorage.getItem('ns_theme') || 'light'); } catch { applyTheme('light'); }
+
 // ---------- helpers ----------
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const arg = v => esc(JSON.stringify(String(v)));

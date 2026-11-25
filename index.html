@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-title" content="NileScholar" />
 <link rel="manifest" href="site.webmanifest" />
+<meta name="theme-color" content="#ffffff" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Playwrite+AU+SA+Guides&family=Saira:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -38,6 +39,8 @@ tailwind.config = { theme: { extend: {
   .nav-tab[aria-current="page"] { background:#EFF4FF; color:#274193; }
   .mtab { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:.5rem 0; font-size:.75rem; font-weight:500; color:#475569; }
   .mtab[aria-current="page"] { color:#274193; }
+  body:not(.authed) .need-auth { display:none !important; }
+  body:not(.authed) { padding-bottom:0 !important; }
   .view { animation:fade .2s ease; }
   @keyframes fade { from { opacity:0; } to { opacity:1; } }
   .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
@@ -55,9 +58,9 @@ tailwind.config = { theme: { extend: {
       <span class="font-display text-xl text-nile-900">Nile<span class="text-gold-700">Scholar</span></span>
     </button>
     <nav class="hidden md:flex items-center gap-1" aria-label="Main">
-      <button data-tab="library" onclick="switchTab('library')" class="nav-tab">Library</button>
-      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-nile-100 text-nile-800">0</span></button>
-      <button onclick="newFile()" class="ml-2 px-4 py-2 rounded-lg text-sm font-semibold bg-gold-500 text-nile-900 hover:bg-gold-400">Add file</button>
+      <button data-tab="library" onclick="switchTab('library')" class="nav-tab need-auth">Library</button>
+      <button data-tab="shelf" onclick="switchTab('shelf')" class="nav-tab need-auth">Shelf <span id="shelf-count" class="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-nile-100 text-nile-800">0</span></button>
+      <button onclick="newFile()" class="need-auth ml-2 px-4 py-2 rounded-lg text-sm font-semibold bg-gold-500 text-nile-900 hover:bg-gold-400">Add file</button>
       <button id="nav-signin" data-tab="auth" onclick="switchTab('auth')" class="nav-tab">Sign in</button>
       <div id="nav-user" class="hidden items-center ml-1">
         <button onclick="handleSignOut()" class="nav-tab">Sign out</button>
@@ -72,7 +75,7 @@ tailwind.config = { theme: { extend: {
   <section id="view-library" class="view hidden">
     <div class="rounded-3xl bg-gradient-to-br from-nile-900 via-nile-800 to-nile-600 text-white p-6 sm:p-10 mb-6">
       <h1 class="text-3xl sm:text-4xl font-bold leading-tight">Find the notes you need</h1>
-      <p class="font-hand text-sm leading-relaxed text-nile-100 mt-3 max-w-xl">Shared lecture notes, textbooks and past questions. Browse freely; sign in to upload and manage your own files.</p>
+      <p class="font-hand text-sm leading-relaxed text-nile-100 mt-3 max-w-xl">Shared lecture notes, textbooks and past questions for Nile University students.</p>
       <p id="stats" class="text-sm text-nile-200 mt-3 h-5"></p>
       <div class="relative mt-4 max-w-2xl">
         <svg class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/></svg>
@@ -159,7 +162,7 @@ tailwind.config = { theme: { extend: {
   <section id="view-auth" class="view hidden">
     <div class="max-w-md mx-auto bg-white rounded-2xl border border-slate-200 p-6 sm:p-8">
       <h1 id="auth-heading" class="text-3xl font-bold text-nile-900">Sign in</h1>
-      <p id="auth-sub" class="font-hand text-sm leading-relaxed text-slate-600 mt-2 mb-5">Sign in with your Nile University email to upload files and manage your own uploads.</p>
+      <p id="auth-sub" class="font-hand text-sm leading-relaxed text-slate-600 mt-2 mb-5">Sign in with your Nile University email to browse and share study files.</p>
       <div class="grid grid-cols-2 gap-1 p-1 mb-5 rounded-xl bg-slate-100">
         <button id="tab-signin" type="button" onclick="setAuthMode('signin')" class="px-3 py-2 rounded-lg text-sm font-medium">Sign in</button>
         <button id="tab-signup" type="button" onclick="setAuthMode('signup')" class="px-3 py-2 rounded-lg text-sm font-medium">Create account</button>
@@ -182,7 +185,7 @@ tailwind.config = { theme: { extend: {
   <p class="font-hand text-xs leading-loose max-w-xl mx-auto">An independent project. Feel free to add your own files and help the library grow.</p>
 </footer>
 
-<nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex items-end px-2" style="padding-bottom:env(safe-area-inset-bottom,0px)" aria-label="Main">
+<nav class="need-auth md:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-200 flex items-end px-2" style="padding-bottom:env(safe-area-inset-bottom,0px)" aria-label="Main">
   <button data-tab="library" onclick="switchTab('library')" class="mtab">
     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h10"/></svg>Library</button>
   <button data-tab="shelf" onclick="switchTab('shelf')" class="mtab">
@@ -229,7 +232,7 @@ function setAuthMode(mode) {
   document.getElementById('auth-heading').textContent = up ? 'Create account' : 'Sign in';
   document.getElementById('auth-sub').textContent = up
     ? 'Use your Nile University email. We’ll send a link to confirm it’s really yours.'
-    : 'Sign in with your Nile University email to upload files and manage your own uploads.';
+    : 'Sign in with your Nile University email to browse and share study files.';
   document.getElementById('confirm-wrap').classList.toggle('hidden', !up);
   document.getElementById('l-confirm').required = up;
   document.getElementById('l-pass').autocomplete = up ? 'new-password' : 'current-password';
@@ -293,6 +296,7 @@ async function handleAuth(e) {
 
 function updateAuthUI() {
   const signedIn = Boolean(session && session.user);
+  document.body.classList.toggle('authed', signedIn);
   document.getElementById('nav-signin').classList.toggle('hidden', signedIn);
   const u = document.getElementById('nav-user');
   u.classList.toggle('hidden', !signedIn); u.classList.toggle('flex', signedIn);
@@ -303,11 +307,10 @@ async function onSession(s) {
   const wasSignedIn = Boolean(session && session.user);
   session = s;
   updateAuthUI();
+  if (!s) { files = []; loading = false; render(); switchTab('auth'); return; }
+  if (!wasSignedIn) { loading = true; render(); }
   await loadLibrary();
-  const onAuthView = !document.getElementById('view-auth').classList.contains('hidden');
-  const onAddView = !document.getElementById('view-add').classList.contains('hidden');
-  if (s && onAuthView) switchTab('library');
-  else if (!s && (onAuthView || (onAddView && wasSignedIn))) switchTab('library');
+  if (!document.getElementById('view-auth').classList.contains('hidden')) switchTab('library');
 }
 
 // ---------- shared library data via Supabase ----------
@@ -343,17 +346,16 @@ async function loadLibrary() {
   }
 }
 
-function getFileUrl(f) {
+async function getFileUrl(f) {
   if (!sb || !f.storagePath) return '';
-  return sb.storage.from(BUCKET).getPublicUrl(f.storagePath).data.publicUrl;
+  const { data, error } = await sb.storage.from(BUCKET).createSignedUrl(f.storagePath, 3600);
+  if (error) { console.error(error); return ''; }
+  return data.signedUrl;
 }
 
 // ---------- navigation ----------
 function switchTab(name) {
-  if (name === 'add' && !session) {
-    toast('Sign in with your Nile University email to upload files.');
-    name = 'auth';
-  }
+  if (!(session && session.user) && name !== 'auth') name = 'auth';
   document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
   if (name !== 'add') resetForm();
   document.getElementById('view-' + name).classList.remove('hidden');
@@ -483,20 +485,21 @@ function toggleBookmark(id) {
   toast(i > -1 ? 'Removed from shelf' : 'Saved to shelf');
 }
 
-function openFile(id) {
+async function openFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
-  const url = getFileUrl(f);
-  if (!url) return toast('File link is unavailable.');
   if (!/^(application\/pdf|image\/|text\/)/.test(f.mimeType)) {
     toast('This file type can’t be previewed in browser. Downloading it instead.');
     return downloadFile(id);
   }
-  window.open(url, '_blank', 'noopener');
+  const w = window.open('', '_blank');
+  const url = await getFileUrl(f);
+  if (!url) { if (w) w.close(); return toast('File link is unavailable.'); }
+  if (w) w.location.href = url; else window.location.href = url;
 }
 
 async function downloadFile(id) {
   const f = files.find(x => x.id === id); if (!f) return;
-  const url = getFileUrl(f);
+  const url = await getFileUrl(f);
   if (!url) return toast('File link is unavailable.');
   try {
     const res = await fetch(url);
